@@ -1,24 +1,204 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
 
-.main {
-  height: 200px;
-  background-color: yellow;
+#root {
+  --primary-background: #282930;
+  --primary-accent: #2af596;
+  --primary-accent-hover: #c7d6cf;
+  --secondary-accent: #1e2027;
+  --secondary-accent-hover: #34363c;
+  --input: #22232b;
+  --input-placeholder: #484b55;
+  --white: #c8ccd8;
+  --gray: #3a3c42;
+  --black: #141519;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto Mono", monospace;
+  color: var(--white);
+}
+
+.App {
+  background-color: var(--primary-background);
+  height: 100vh;
+  width: 100%;
   display: flex;
   justify-content: center;
-  padding: 20px;
+  align-items: center;
+}
+
+.container {
+  flex: 0 1 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.primary-btn {
+  color: var(--black);
+  background: var(--primary-accent);
+  padding: 10px 20px;
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: 0.1s ease-in 0s;
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  background: var(--primary-accent-hover);
+}
+
+.secondary-btn {
+  color: var(--white);
+  background: var(--secondary-accent);
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 400;
+  transition: 0.1s ease-in 0s;
+  cursor: pointer;
+}
+
+.secondary-btn:hover {
+  color: var(--black);
+  background: var(--primary-accent-hover);
+  transition: 0.1s ease-in 0s;
+}
+
+.input textarea {
+  flex: 1;
+}
+
+#upload-photo {
+  opacity: 0;
+  position: absolute;
+  z-index: -1;
+}
+
+.input {
+  position: relative;
+  display: flex;
+  border-radius: 8px;
+  background-color: var(--input);
+  transition: 0.1s ease-in 0s;
+  padding: 10px 10px 50px 10px;
+}
+
+.input:has(> textarea:focus) {
+  background: var(--secondary-accent);
+  box-shadow: 0px 0px 15px var(--secondary-accent);
+  transition: 0.1s ease-in 0s;
+}
+
+.input .upload {
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  bottom: 10px;
+  right: 10px;
+  opacity: 0.5;
+  transition: 0.1s ease-in 0s;
+}
+
+.input .upload:hover {
+  opacity: 1;
+  transition: 0.1s ease-in 0s;
+}
+
+.input .upload svg {
+  height: 20px;
+  width: 20px;
+}
+
+.form-control {
+  background: transparent;
+  border: none;
+  resize: none;
+  transition: 0.1s ease-in 0s;
+  color: var(--white);
+  font-size: 1rem;
+}
+
+::selection {
+  background-color: var(--primary-accent);
+  color: var(--black);
+}
+
+.form-control::placeholder {
+  color: var(--input-placeholder);
+}
+
+.form-control:focus {
+  outline: none;
+}
+
+.form-control:focus::-webkit-scrollbar-thumb {
+  border: 6px solid var(--secondary-accent);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: auto;
+  scrollbar-color: var(--black) var(--white);
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 15px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--gray);
+  border-radius: 10px;
+  border: 6px solid var(--input);
+}
+
+hr {
+  margin: 20px auto;
+  opacity: 0.1;
+  width: 20px;
+}
+
+.horizontal-interactions {
+  display: flex;
+  flex: 1;
+  gap: 15px;
+}
+
+.horizontal-interactions button {
+  flex: 1;
+}
+
+.keys {
+  display: flex;
+  justify-content: center;
   gap: 10px;
 }
 
-.main div {
-  background-color: red;
+.keys .key {
+  background: var(--input);
+  display: flex;
+  justify-content: center;
+  border-radius: 8px;
+  padding: 20px;
+  flex: 1;
+  transition: 0.1s ease-in 0s;
+  width: 20px;
 }
 
-.main div:first-child {
-  flex-grow: 0;
-  flex-shrink: 1;
-  flex-basis: 200px;
-}
-
-.main div:nth-child(2) {
-  flex-grow: 1;
-  max-width: 600px;
+.keys .key-focus {
+  width: 100px;
+  transition: 0.1s ease-in 0s;
+  background: var(--secondary-accent);
+  box-shadow: 0px 0px 15px var(--secondary-accent);
 }
