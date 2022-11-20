@@ -2,24 +2,29 @@ import React, { useState, useRef } from "react";
 import "./App.css";
 import useHorebCipher from "./hooks/useCipher";
 import TextareaAutosize from "react-textarea-autosize";
-import { HiOutlineUpload } from "react-icons/hi";
+import { HiChevronDown, HiChevronUp, HiOutlineUpload } from "react-icons/hi";
+import { mod } from "./utils/mod";
+import { abcdef, MAX_ALPHABET } from "./utils/alphabet";
 
 const App = () => {
   const [text, setText] = useState<string>("");
-  const [resultText, setResultText] = useState<string>("");
   const {
     encrypt,
     decrypt,
     setRotationI,
+    rotationI,
+    rotationII,
+    rotationIII,
+    rotationIV,
+    rotationV,
     setRotationII,
     setRotationIII,
     setRotationIV,
     setRotationV,
   } = useHorebCipher();
   const [keyFocus, setKeyFocus] = useState<number>(1);
-
   const plainTextRef = useRef<HTMLTextAreaElement | null>(null);
-  const cipherTextRef = useRef<HTMLTextAreaElement | null>(null);
+  const fileRef = useRef<HTMLInputElement | null>(null);
 
   const updatePlainText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
@@ -27,37 +32,123 @@ const App = () => {
 
   const encryptClicked = () => {
     const result = encrypt(text);
-    setResultText(result);
+    setText(result);
+    plainTextRef.current!.value = result;
   };
 
   const decryptClicked = () => {
     const result = decrypt(text);
-    setResultText(result);
+    setText(result);
+    plainTextRef.current!.value = result;
   };
 
   const resetFields = () => {
-    setResultText("");
     setText("");
+    plainTextRef.current!.value = "";
   };
 
-  const updateKeyFocus = (key: number) => {
-    setKeyFocus(key);
+  const incrementKeyI = () => {
+    setRotationI((prev: number) => mod(prev + 1, MAX_ALPHABET));
+  };
+  const incrementKeyII = () => {
+    setRotationII((prev: number) => mod(prev + 1, MAX_ALPHABET));
+  };
+  const incrementKeyIII = () => {
+    setRotationIII((prev: number) => mod(prev + 1, MAX_ALPHABET));
+  };
+  const incrementKeyIV = () => {
+    setRotationIV((prev: number) => mod(prev + 1, MAX_ALPHABET));
+  };
+  const incrementKeyV = () => {
+    setRotationV((prev: number) => mod(prev + 1, MAX_ALPHABET));
   };
 
-  const updateKeyI = (e: React.ChangeEvent<HTMLInputElement>) => {};
-  const updateKeyII = (e: React.ChangeEvent<HTMLInputElement>) => {};
-  const updateKeyIII = (e: React.ChangeEvent<HTMLInputElement>) => {};
-  const updateKeyIV = (e: React.ChangeEvent<HTMLInputElement>) => {};
-  const updateKeyV = (e: React.ChangeEvent<HTMLInputElement>) => {};
+  const decrementKeyI = () => {
+    setRotationI((prev: number) => mod(prev - 1, MAX_ALPHABET));
+  };
+  const decrementKeyII = () => {
+    setRotationII((prev: number) => mod(prev - 1, MAX_ALPHABET));
+  };
+  const decrementKeyIII = () => {
+    setRotationIII((prev: number) => mod(prev - 1, MAX_ALPHABET));
+  };
+  const decrementKeyIV = () => {
+    setRotationIV((prev: number) => mod(prev - 1, MAX_ALPHABET));
+  };
+  const decrementKeyV = () => {
+    setRotationV((prev: number) => mod(prev - 1, MAX_ALPHABET));
+  };
+
+  const uploadedFile = () => {};
 
   return (
     <div className="App">
       <div className="container">
         {/* <label>Plain Text </label> */}
+        <label>Cipher key</label>
+        <span className="keys">
+          <div className="key">
+            <div className="arrows">
+              <div className="arrow" onClick={incrementKeyI}>
+                <HiChevronUp></HiChevronUp>
+              </div>
+              <div className="arrow" onClick={decrementKeyI}>
+                <HiChevronDown></HiChevronDown>
+              </div>
+            </div>
+            <p>{abcdef[rotationI].toUpperCase()}</p>
+          </div>
+          <div className="key">
+            <div className="arrows">
+              <div className="arrow" onClick={incrementKeyII}>
+                <HiChevronUp></HiChevronUp>
+              </div>
+              <div className="arrow" onClick={decrementKeyII}>
+                <HiChevronDown></HiChevronDown>
+              </div>
+            </div>
+            <p>{abcdef[rotationII].toUpperCase()}</p>
+          </div>
+          <div className="key">
+            <div className="arrows">
+              <div className="arrow" onClick={incrementKeyIII}>
+                <HiChevronUp></HiChevronUp>
+              </div>
+              <div className="arrow" onClick={decrementKeyIII}>
+                <HiChevronDown></HiChevronDown>
+              </div>
+            </div>
+            <p>{abcdef[rotationIII].toUpperCase()}</p>
+          </div>
+          <div className="key">
+            <div className="arrows">
+              <div className="arrow" onClick={incrementKeyIV}>
+                <HiChevronUp></HiChevronUp>
+              </div>
+              <div className="arrow" onClick={decrementKeyIV}>
+                <HiChevronDown></HiChevronDown>
+              </div>
+            </div>
+            <p>{abcdef[rotationIV].toUpperCase()}</p>
+          </div>
+          <div className="key">
+            <div className="arrows">
+              <div className="arrow" onClick={incrementKeyV}>
+                <HiChevronUp></HiChevronUp>
+              </div>
+              <div className="arrow" onClick={decrementKeyV}>
+                <HiChevronDown></HiChevronDown>
+              </div>
+            </div>
+            <p>{abcdef[rotationV].toUpperCase()}</p>
+          </div>
+        </span>
         <div className="input">
           <TextareaAutosize
             ref={plainTextRef}
-            onChange={(e) => updatePlainText(e)}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+              updatePlainText(e)
+            }
             placeholder="Whats on your mind?"
             className="form-control"
             minRows={5}
@@ -69,51 +160,14 @@ const App = () => {
           <input
             type="file"
             id="upload-photo"
+            ref={fileRef}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              uploadedFile(e)
+            }
             // onChange={onSelectFile}
           />
         </div>
-        <span className="keys">
-          <div className={keyFocus === 1 ? "key key-focus" : "key"}>
-            <input
-              className="form-control"
-              type="text"
-              onFocus={() => updateKeyFocus(1)}
-              onChange={(e) => updateKeyI(e)}
-            ></input>
-          </div>
-          <div className={keyFocus === 2 ? "key key-focus" : "key"}>
-            <input
-              className="form-control"
-              type="text"
-              onFocus={() => updateKeyFocus(2)}
-              onChange={(e) => updateKeyI(e)}
-            ></input>
-          </div>
-          <div className={keyFocus === 3 ? "key key-focus" : "key"}>
-            <input
-              className="form-control"
-              type="text"
-              onFocus={() => updateKeyFocus(3)}
-              onChange={(e) => updateKeyI(e)}
-            ></input>
-          </div>
-          <div className={keyFocus === 4 ? "key key-focus" : "key"}>
-            <input
-              className="form-control"
-              type="text"
-              onFocus={() => updateKeyFocus(4)}
-              onChange={(e) => updateKeyI(e)}
-            ></input>
-          </div>
-          <div className={keyFocus === 5 ? "key key-focus" : "key"}>
-            <input
-              className="form-control"
-              type="text"
-              onFocus={() => updateKeyFocus(5)}
-              onChange={(e) => updateKeyI(e)}
-            ></input>
-          </div>
-        </span>
+
         <span className="horizontal-interactions">
           <button
             type="button"
