@@ -7,9 +7,14 @@ import {
   HiChevronUp,
   HiOutlineDownload,
   HiOutlineUpload,
+  HiPencil,
+  HiQrcode,
 } from "react-icons/hi";
+import { IconContext } from "react-icons";
 import { mod } from "./utils/mod";
 import { abcdef, MAX_ALPHABET } from "./utils/alphabet";
+
+const filename = "cipher-result";
 
 const App = () => {
   const [text, setText] = useState<string>("");
@@ -50,6 +55,7 @@ const App = () => {
   const resetFields = () => {
     setText("");
     textRef.current!.value = "";
+    fileRef.current!.value = "";
   };
 
   const incrementKeyI = () => {
@@ -88,6 +94,7 @@ const App = () => {
     e.preventDefault();
     const reader = new FileReader();
     reader.onload = async (e) => {
+      resetFields();
       const text = e.target!.result;
       setText(text!.toString());
       textRef.current!.value = text!.toString();
@@ -96,9 +103,30 @@ const App = () => {
     reader.readAsText(e.target.files![0]);
   };
 
+  const downloadResult = () => {
+    if (textRef.current!.value === "") {
+      return;
+    }
+    const element = document.createElement("a");
+    const file = new Blob([textRef.current!.value], {
+      type: "text/plain",
+    });
+    element.href = URL.createObjectURL(file);
+    element.download = `${filename}.txt`;
+    document.body.appendChild(element); // Required for this to work in FireFox
+    element.click();
+  };
+
   return (
     <div className="App">
       <div className="container">
+        <div className="logo">
+          <div className="icon">
+            <HiQrcode></HiQrcode>
+          </div>
+          <h2>horeb-cipher</h2>
+        </div>
+
         {/* <label>Plain Text </label> */}
         <label>Cipher key</label>
         <span className="keys">
@@ -169,7 +197,10 @@ const App = () => {
             minRows={5}
             maxRows={15}
           />
-          <label className="filename">filename.txt</label>
+          <label
+            className={text.length === 0 ? "filename disabled" : "filename"}
+            onClick={downloadResult}
+          >{`${filename}.txt`}</label>
           <label htmlFor="upload-photo" className="upload">
             <HiOutlineUpload></HiOutlineUpload>
           </label>
