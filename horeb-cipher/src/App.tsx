@@ -12,7 +12,14 @@ import {
 } from "react-icons/hi";
 import { IconContext } from "react-icons";
 import { mod } from "./utils/mod";
-import { abcdef, MAX_ALPHABET } from "./utils/alphabet";
+import {
+  abcdef,
+  colemak,
+  azerty,
+  qwerty,
+  dvorak,
+  MAX_ALPHABET,
+} from "./utils/alphabet";
 
 const filename = "cipher-result";
 
@@ -150,7 +157,7 @@ const App = () => {
                 <HiChevronDown></HiChevronDown>
               </div>
             </div>
-            <p>{abcdef[rotationII].toUpperCase()}</p>
+            <p>{colemak[rotationII].toUpperCase()}</p>
           </div>
           <div className="key">
             <div className="arrows">
@@ -161,7 +168,7 @@ const App = () => {
                 <HiChevronDown></HiChevronDown>
               </div>
             </div>
-            <p>{abcdef[rotationIII].toUpperCase()}</p>
+            <p>{azerty[rotationIII].toUpperCase()}</p>
           </div>
           <div className="key">
             <div className="arrows">
@@ -172,7 +179,7 @@ const App = () => {
                 <HiChevronDown></HiChevronDown>
               </div>
             </div>
-            <p>{abcdef[rotationIV].toUpperCase()}</p>
+            <p>{qwerty[rotationIV].toUpperCase()}</p>
           </div>
           <div className="key">
             <div className="arrows">
@@ -183,7 +190,7 @@ const App = () => {
                 <HiChevronDown></HiChevronDown>
               </div>
             </div>
-            <p>{abcdef[rotationV].toUpperCase()}</p>
+            <p>{dvorak[rotationV].toUpperCase()}</p>
           </div>
         </span>
         <div className="input">
