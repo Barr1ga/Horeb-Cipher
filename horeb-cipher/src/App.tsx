@@ -79,7 +79,14 @@ const App = () => {
     setRotationV((prev: number) => mod(prev - 1, MAX_ALPHABET));
   };
 
-  const uploadedFile = () => {};
+  const uploadedFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = ()  => {
+      
+    }
+  };
 
   return (
     <div className="App">
