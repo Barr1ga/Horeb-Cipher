@@ -116,6 +116,20 @@
   width: 20px;
 }
 
+.input .filename {
+  position: absolute;
+  height: 20px;
+  bottom: 10px;
+  left: 10px;
+  opacity: 0.5;
+  transition: 0.1s ease-in 0s;
+}
+
+.input .filename:hover {
+  opacity: 1;
+  transition: 0.1s ease-in 0s;
+}
+
 .form-control {
   background: transparent;
   border: none;

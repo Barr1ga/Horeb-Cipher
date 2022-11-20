@@ -2,7 +2,12 @@ import React, { useState, useRef } from "react";
 import "./App.css";
 import useHorebCipher from "./hooks/useCipher";
 import TextareaAutosize from "react-textarea-autosize";
-import { HiChevronDown, HiChevronUp, HiOutlineUpload } from "react-icons/hi";
+import {
+  HiChevronDown,
+  HiChevronUp,
+  HiOutlineDownload,
+  HiOutlineUpload,
+} from "react-icons/hi";
 import { mod } from "./utils/mod";
 import { abcdef, MAX_ALPHABET } from "./utils/alphabet";
 
@@ -23,7 +28,7 @@ const App = () => {
     setRotationV,
   } = useHorebCipher();
   const [keyFocus, setKeyFocus] = useState<number>(1);
-  const plainTextRef = useRef<HTMLTextAreaElement | null>(null);
+  const textRef = useRef<HTMLTextAreaElement | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
 
   const updatePlainText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -33,18 +38,18 @@ const App = () => {
   const encryptClicked = () => {
     const result = encrypt(text);
     setText(result);
-    plainTextRef.current!.value = result;
+    textRef.current!.value = result;
   };
 
   const decryptClicked = () => {
     const result = decrypt(text);
     setText(result);
-    plainTextRef.current!.value = result;
+    textRef.current!.value = result;
   };
 
   const resetFields = () => {
     setText("");
-    plainTextRef.current!.value = "";
+    textRef.current!.value = "";
   };
 
   const incrementKeyI = () => {
@@ -80,12 +85,15 @@ const App = () => {
   };
 
   const uploadedFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files[0];
+    e.preventDefault();
     const reader = new FileReader();
-    reader.readAsText(file);
-    reader.onload = ()  => {
-      
-    }
+    reader.onload = async (e) => {
+      const text = e.target!.result;
+      setText(text!.toString());
+      textRef.current!.value = text!.toString();
+      console.log(text);
+    };
+    reader.readAsText(e.target.files![0]);
   };
 
   return (
@@ -152,7 +160,7 @@ const App = () => {
         </span>
         <div className="input">
           <TextareaAutosize
-            ref={plainTextRef}
+            ref={textRef}
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
               updatePlainText(e)
             }
@@ -161,6 +169,7 @@ const App = () => {
             minRows={5}
             maxRows={15}
           />
+          <label className="filename">filename.txt</label>
           <label htmlFor="upload-photo" className="upload">
             <HiOutlineUpload></HiOutlineUpload>
           </label>
