@@ -17,7 +17,6 @@
   margin: 0;
   padding: 0;
   font-family: "Roboto Mono", monospace;
-  color: var(--white);
 }
 
 .App {
@@ -27,6 +26,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  color: var(--white);
 }
 
 .logo {
@@ -36,15 +36,16 @@
 }
 
 .logo .icon {
+  color: var(--primary-accent);
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  opacity: 0.5;
+  opacity: 1;
 }
 
-.logo .icon svg {
-  height: 30px;
-  width: 30px;
+.logo .icon img {
+  height: 25px;
+  width: 25px;
 }
 
 .container {
@@ -123,6 +124,8 @@
   opacity: 0.5;
   transition: 0.1s ease-in 0s;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
 }
 
 .input .upload:hover {
@@ -137,16 +140,22 @@
 
 .input .filename {
   position: absolute;
-  height: 20px;
   bottom: 10px;
   left: 10px;
+  width: 165px;
+  display: flex;
+  justify-content: center;
+}
+
+.input .filename label {
+  height: 20px;
   opacity: 0.5;
   background: transparent;
   transition: 0.1s ease-in 0s;
   cursor: pointer;
 }
 
-.input .filename:hover {
+.input .filename label:hover {
   opacity: 1;
   transition: 0.1s ease-in 0s;
 }
@@ -177,7 +186,7 @@
   border: 6px solid var(--secondary-accent);
 }
 
-.disabled {
+.blurred {
   opacity: 0.3 !important;
   cursor: not-allowed !important;
   color: transparent;
@@ -254,9 +263,58 @@ hr {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .keys .key .arrow:hover {
+  opacity: 1;
+  transition: 0.1s ease-in 0s;
+}
+
+.tooltip-container {
+  position: relative;
+}
+
+.tooltip-container .tooltip {
+  opacity: 0;
+  position: absolute;
+  background-color: var(--black);
+  box-shadow: 0px 0px 15px var(--secondary-accent);
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  transition: 0.1s ease-in 0s;
+  bottom: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.tooltip .arrow-down {
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid var(--black);
+  position: absolute;
+  top: 27px;
+}
+
+.filename label + .tooltip {
+  width: 100px;
+  left: 18px;
+}
+
+.upload label + .tooltip {
+  width: 85px;
+  right: -42px;
+}
+
+.filename label:hover + .tooltip {
+  opacity: 1;
+  transition: 0.1s ease-in 0s;
+}
+
+.upload label:hover + .tooltip {
   opacity: 1;
   transition: 0.1s ease-in 0s;
 }
