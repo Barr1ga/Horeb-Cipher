@@ -22,7 +22,7 @@ import {
   MAX_ALPHABET,
 } from "./utils/alphabet";
 
-const filename = "cipher-result";
+const filename = "message";
 
 const App = () => {
   const [text, setText] = useState<string>("");
