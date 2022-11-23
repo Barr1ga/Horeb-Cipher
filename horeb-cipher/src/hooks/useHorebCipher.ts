@@ -149,26 +149,14 @@ const useCipher = () => {
   // run encryption
   const encryptHoreb = (text: string): string => {
     action = ACTIONS.ENCRYPT;
-    rsaConstructor(
-      rotationI,
-      rotationII,
-      rotationIII,
-      rotationIV,
-      rotationV,
-    )
+    rsaConstructor(rotationI, rotationII, rotationIII, rotationIV, rotationV);
     return encryptRsa(horebCipher(text));
   };
 
   // run encryption
   const decryptHoreb = (text: string): string => {
     action = ACTIONS.DECRYPT;
-    rsaConstructor(
-      rotationI,
-      rotationII,
-      rotationIII,
-      rotationIV,
-      rotationV,
-    )
+    rsaConstructor(rotationI, rotationII, rotationIII, rotationIV, rotationV);
     return decryptRsa(horebCipher(text));
   };
 
