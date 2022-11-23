@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./App.css";
-import useHorebCipher from "./hooks/useCipher";
+import useHorebCipher from "./hooks/useHorebCipher";
+import useRsa from "./hooks/useRsa";
 import TextareaAutosize from "react-textarea-autosize";
 import Logo from "./assets/horeb-cipher-logo.svg";
 import {
@@ -29,8 +30,8 @@ const App = () => {
   const [text, setText] = useState<string>("");
   const [encrypted, setEncrypted] = useState<boolean>(false);
   const {
-    encrypt,
-    decrypt,
+    encryptHoreb,
+    decryptHoreb,
     rotationI,
     rotationII,
     rotationIII,
@@ -42,6 +43,7 @@ const App = () => {
     setRotationIV,
     setRotationV,
   } = useHorebCipher();
+  const { encryptRsa, decryptRsa } = useRsa();
   const [keyFocus, setKeyFocus] = useState<number>(1);
   const textRef = useRef<HTMLTextAreaElement | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
@@ -58,15 +60,16 @@ const App = () => {
 
   const encryptClicked = () => {
     setEncrypted(true);
-
-    const result = encrypt(text);
+    var result = encryptHoreb(text);
+    result = encryptRsa(result);
     setText(result);
     textRef.current!.value = result;
   };
 
   const decryptClicked = () => {
     setEncrypted(false);
-    const result = decrypt(text);
+    var result = decryptHoreb(text);
+    result = decryptRsa(result);
     setText(result);
     textRef.current!.value = result;
   };

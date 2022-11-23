@@ -8,15 +8,8 @@ import {
   dvorak,
   MAX_ALPHABET,
   HALF_ALPHABET,
+  isAlphabet,
 } from "../utils/alphabet";
-
-const isAlphabet = (character: string): boolean => {
-  if (!/[^a-zA-Z]/.test(character)) {
-    return true;
-  }
-
-  return false;
-};
 
 const ACTIONS: {
   ENCRYPT: number;
@@ -155,8 +148,8 @@ const useCipher = () => {
       console.log(curr);
 
       if (isAlphabet(curr)) {
-        const cipherCharacter = rotorI(curr);
-        result = result.concat(cipherCharacter);
+        const resultCharacter = rotorI(curr);
+        result = result.concat(resultCharacter);
       } else {
         result = result.concat(curr);
       }
@@ -166,14 +159,14 @@ const useCipher = () => {
   };
 
   // run encryption
-  const encrypt = (text: string): string => {
+  const encryptHoreb = (text: string): string => {
     action = ACTIONS.ENCRYPT;
     console.log(action);
     return horebCipher(text);
   };
 
   // run encryption
-  const decrypt = (text: string): string => {
+  const decryptHoreb = (text: string): string => {
     console.log(text);
     action = ACTIONS.DECRYPT;
     console.log(action);
@@ -182,8 +175,8 @@ const useCipher = () => {
   };
 
   return {
-    encrypt,
-    decrypt,
+    encryptHoreb,
+    decryptHoreb,
     rotationI,
     rotationII,
     rotationIII,
