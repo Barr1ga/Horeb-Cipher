@@ -17,6 +17,7 @@
   margin: 0;
   padding: 0;
   font-family: "Roboto Mono", monospace;
+  caret-color: var(--primary-accent);
 }
 
 .App {
@@ -27,6 +28,8 @@
   justify-content: center;
   align-items: center;
   color: var(--white);
+  overflow-y: scroll;
+  gap: 20px;
 }
 
 .logo {
@@ -48,8 +51,29 @@
   width: 25px;
 }
 
+.info {
+  opacity: 0.3;
+  display: flex;
+  align-items: center;
+  transition: 0.1s ease-in 0s;
+}
+
+.info:hover {
+  opacity: 1;
+  transition: 0.1s ease-in 0s;
+}
+
+.info svg {
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+}
+
 .container {
   flex: 0 1 400px;
+}
+
+.container section {
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -91,6 +115,7 @@
 }
 
 .input textarea {
+  width: 100%;
   flex: 1;
 }
 
@@ -101,12 +126,27 @@
 }
 
 .input {
-  position: relative;
-  display: flex;
   border-radius: 8px;
   background-color: var(--input);
   transition: 0.1s ease-in 0s;
-  padding: 10px 10px 50px 10px;
+  padding: 10px;
+}
+
+.input .interactions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.input .interactions > div:nth-child(2) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.input .interactions > div:nth-child(2) .text-length {
+  opacity: 0.3;
 }
 
 .input:has(> textarea:focus) {
@@ -115,41 +155,52 @@
   transition: 0.1s ease-in 0s;
 }
 
+.input .download,
 .input .upload {
-  position: absolute;
   height: 20px;
   width: 20px;
-  bottom: 10px;
-  right: 10px;
-  opacity: 0.5;
+  opacity: 0.3;
   transition: 0.1s ease-in 0s;
   cursor: pointer;
   display: flex;
   justify-content: center;
 }
 
+.input .download:hover,
 .input .upload:hover {
   opacity: 1;
   transition: 0.1s ease-in 0s;
 }
 
+.input .download svg,
 .input .upload svg {
   height: 20px;
   width: 20px;
+  cursor: pointer;
 }
 
 .input .filename {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  width: 165px;
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.input .filename input,
+.input .filename span {
+  opacity: 0.3;
+}
+
+.input .filename input:focus {
+  opacity: 1;
+}
+
+.input .rename {
+  min-width: 3px;
 }
 
 .input .filename label {
   height: 20px;
-  opacity: 0.5;
   background: transparent;
   transition: 0.1s ease-in 0s;
   cursor: pointer;
@@ -184,13 +235,6 @@
 
 .form-control:focus::-webkit-scrollbar-thumb {
   border: 6px solid var(--secondary-accent);
-}
-
-.blurred {
-  opacity: 0.3 !important;
-  cursor: not-allowed !important;
-  color: transparent;
-  text-shadow: 0 0 5px var(--white);
 }
 
 /* Firefox */
@@ -273,6 +317,9 @@ hr {
 
 .tooltip-container {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .tooltip-container .tooltip {
@@ -287,6 +334,10 @@ hr {
   bottom: 30px;
   display: flex;
   justify-content: center;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .tooltip .arrow-down {
@@ -299,13 +350,22 @@ hr {
   top: 27px;
 }
 
-.filename label + .tooltip {
-  width: 100px;
-  left: 18px;
-}
-
 .upload label + .tooltip {
   width: 85px;
+  left: -42px;
+  right: -42px;
+}
+
+.download label + .tooltip {
+  width: 100px;
+  left: -50px;
+  right: -42px;
+}
+
+.info label + .tooltip {
+  bottom: 35px;
+  width: 35px;
+  left: -50px;
   right: -42px;
 }
 
@@ -317,4 +377,22 @@ hr {
 .upload label:hover + .tooltip {
   opacity: 1;
   transition: 0.1s ease-in 0s;
+}
+
+.info label:hover + .tooltip {
+  opacity: 1;
+  transition: 0.1s ease-in 0s;
+}
+
+.about {
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.about p {
+  opacity: 0.9;
+  font-weight: 200;
 }

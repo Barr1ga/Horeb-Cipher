@@ -10,6 +10,9 @@ import {
   HiOutlineUpload,
   HiPencil,
   HiOutlineQrcode,
+  HiOutlineCheck,
+  HiCheck,
+  HiInformationCircle,
 } from "react-icons/hi";
 import { IconContext } from "react-icons";
 import { mod } from "./utils/mod";
@@ -21,8 +24,6 @@ import {
   dvorak,
   MAX_ALPHABET,
 } from "./utils/alphabet";
-
-const filename = "message";
 
 const App = () => {
   const [text, setText] = useState<string>("");
@@ -44,6 +45,8 @@ const App = () => {
   const [keyFocus, setKeyFocus] = useState<number>(1);
   const textRef = useRef<HTMLTextAreaElement | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
+  const fileNameRef = useRef<HTMLInputElement | null>(null);
+  const [filename, setFilename] = useState<string>("message");
 
   useEffect(() => {
     document.title = "Horeb Cipher";
@@ -118,7 +121,6 @@ const App = () => {
       const text = e.target!.result;
       setText(text!.toString());
       textRef.current!.value = text!.toString();
-      console.log(text);
     };
     reader.readAsText(e.target.files![0]);
   };
@@ -137,140 +139,195 @@ const App = () => {
     element.click();
   };
 
+  const updateFileName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilename(e.target.value);
+  };
+
+  const toggleInfo = () => {
+    const newWindow = window.open(
+      "https://docs.google.com/document/d/1TtCubo0BOoPp1Y6Gl1t4ilj6yz0cZ2fqzK63Ul4-AMM/edit",
+      "_blank",
+      "noopener,noreferrer"
+    );
+    if (newWindow) newWindow.opener = null;
+  };
+
   return (
     <div className="App">
       <div className="container">
-        <div className="logo">
-          <div className="icon">
-            <img src={Logo} alt={"horeb-cipher-logo"} />
-          </div>
-          <h2>horeb-{!encrypted ? "cipher" : "sdgqmi"}</h2>
-        </div>
+        <section>
+          <div className="logo">
+            <div className="icon">
+              <img src={Logo} alt={"horeb-cipher-logo"} />
+            </div>
+            <h2>horeb-{!encrypted ? "cipher" : "sdgqmi"}</h2>
 
-        {/* <label>Plain Text </label> */}
-        <label>Cipher key</label>
-        <span className="keys">
-          <div className="key">
-            <div className="arrows">
-              <div className="arrow" onClick={incrementKeyI}>
-                <HiChevronUp></HiChevronUp>
-              </div>
-              <div className="arrow" onClick={decrementKeyI}>
-                <HiChevronDown></HiChevronDown>
-              </div>
-            </div>
-            <p>{abcdef[rotationI].toUpperCase()}</p>
-          </div>
-          <div className="key">
-            <div className="arrows">
-              <div className="arrow" onClick={incrementKeyII}>
-                <HiChevronUp></HiChevronUp>
-              </div>
-              <div className="arrow" onClick={decrementKeyII}>
-                <HiChevronDown></HiChevronDown>
+            <div className="info" onClick={toggleInfo}>
+              <div className="tooltip-container">
+                <label className="">
+                  <HiInformationCircle></HiInformationCircle>
+                </label>
+                <div className="tooltip">
+                  {"About"}
+                  <div className="arrow-down"></div>
+                </div>
               </div>
             </div>
-            <p>{colemak[rotationII].toUpperCase()}</p>
           </div>
-          <div className="key">
-            <div className="arrows">
-              <div className="arrow" onClick={incrementKeyIII}>
-                <HiChevronUp></HiChevronUp>
+
+          <label>Cipher key</label>
+          <span className="keys">
+            <div className="key">
+              <div className="arrows">
+                <div className="arrow" onClick={incrementKeyI}>
+                  <HiChevronUp></HiChevronUp>
+                </div>
+                <div className="arrow" onClick={decrementKeyI}>
+                  <HiChevronDown></HiChevronDown>
+                </div>
               </div>
-              <div className="arrow" onClick={decrementKeyIII}>
-                <HiChevronDown></HiChevronDown>
-              </div>
+              <p>{abcdef[rotationI].toUpperCase()}</p>
             </div>
-            <p>{azerty[rotationIII].toUpperCase()}</p>
-          </div>
-          <div className="key">
-            <div className="arrows">
-              <div className="arrow" onClick={incrementKeyIV}>
-                <HiChevronUp></HiChevronUp>
+            <div className="key">
+              <div className="arrows">
+                <div className="arrow" onClick={incrementKeyII}>
+                  <HiChevronUp></HiChevronUp>
+                </div>
+                <div className="arrow" onClick={decrementKeyII}>
+                  <HiChevronDown></HiChevronDown>
+                </div>
               </div>
-              <div className="arrow" onClick={decrementKeyIV}>
-                <HiChevronDown></HiChevronDown>
-              </div>
+              <p>{colemak[rotationII].toUpperCase()}</p>
             </div>
-            <p>{qwerty[rotationIV].toUpperCase()}</p>
-          </div>
-          <div className="key">
-            <div className="arrows">
-              <div className="arrow" onClick={incrementKeyV}>
-                <HiChevronUp></HiChevronUp>
+            <div className="key">
+              <div className="arrows">
+                <div className="arrow" onClick={incrementKeyIII}>
+                  <HiChevronUp></HiChevronUp>
+                </div>
+                <div className="arrow" onClick={decrementKeyIII}>
+                  <HiChevronDown></HiChevronDown>
+                </div>
               </div>
-              <div className="arrow" onClick={decrementKeyV}>
-                <HiChevronDown></HiChevronDown>
-              </div>
+              <p>{azerty[rotationIII].toUpperCase()}</p>
             </div>
-            <p>{dvorak[rotationV].toUpperCase()}</p>
-          </div>
-        </span>
-        <div className="input">
-          <TextareaAutosize
-            ref={textRef}
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-              updatePlainText(e)
-            }
-            placeholder="Whats on your mind?"
-            className="form-control"
-            minRows={5}
-            maxRows={15}
-          />
-          <span className="filename">
-            <div className="tooltip-container">
-              <label
-                className={text.length === 0 ? "blurred" : ""}
-                onClick={downloadResult}
-              >{`${filename}.txt`}</label>
-              <div className="tooltip">
-                {"Download File"}
-                <div className="arrow-down"></div>
+            <div className="key">
+              <div className="arrows">
+                <div className="arrow" onClick={incrementKeyIV}>
+                  <HiChevronUp></HiChevronUp>
+                </div>
+                <div className="arrow" onClick={decrementKeyIV}>
+                  <HiChevronDown></HiChevronDown>
+                </div>
               </div>
+              <p>{qwerty[rotationIV].toUpperCase()}</p>
+            </div>
+            <div className="key">
+              <div className="arrows">
+                <div className="arrow" onClick={incrementKeyV}>
+                  <HiChevronUp></HiChevronUp>
+                </div>
+                <div className="arrow" onClick={decrementKeyV}>
+                  <HiChevronDown></HiChevronDown>
+                </div>
+              </div>
+              <p>{dvorak[rotationV].toUpperCase()}</p>
             </div>
           </span>
-          <span className="upload">
-            <div className="tooltip-container">
-              <label htmlFor="upload-photo">
-                <HiOutlineUpload></HiOutlineUpload>
-              </label>
-              <div className="tooltip">
-                {"Upload File"}
-                <div className="arrow-down"></div>
+          <div className="input">
+            <TextareaAutosize
+              ref={textRef}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                updatePlainText(e)
+              }
+              placeholder="Whats on your mind?"
+              className="form-control"
+              minRows={5}
+              maxRows={15}
+            />
+            <span className="interactions">
+              {text.length === 0 ? (
+                <div></div>
+              ) : (
+                <span className="filename">
+                  <div>
+                    <input
+                      type="text"
+                      maxLength={20}
+                      defaultValue={filename}
+                      className="form-control rename"
+                      style={{ width: `${filename.length * 9.65}px` }}
+                      ref={fileNameRef}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        updateFileName(e)
+                      }
+                    ></input>
+                    <span
+                      onClick={() => {
+                        fileNameRef.current?.focus();
+                      }}
+                    >
+                      .txt
+                    </span>
+                  </div>
+                  <div className="download">
+                    <div className="tooltip-container">
+                      <label onClick={downloadResult}>
+                        <HiOutlineDownload></HiOutlineDownload>
+                      </label>
+                      <div className="tooltip">
+                        {"Download File"}
+                        <div className="arrow-down"></div>
+                      </div>
+                    </div>
+                  </div>
+                </span>
+              )}
+              <div>
+                <div className="text-length">{text.length}</div>
+                <span className="upload">
+                  <div className="tooltip-container">
+                    <label htmlFor="upload-photo">
+                      <HiOutlineUpload></HiOutlineUpload>
+                    </label>
+                    <div className="tooltip">
+                      {"Upload File"}
+                      <div className="arrow-down"></div>
+                    </div>
+                  </div>
+                </span>
+                <input
+                  type="file"
+                  id="upload-photo"
+                  ref={fileRef}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    uploadedFile(e)
+                  }
+                  // onChange={onSelectFile}
+                />
               </div>
-            </div>
-          </span>
-          <input
-            type="file"
-            id="upload-photo"
-            ref={fileRef}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              uploadedFile(e)
-            }
-            // onChange={onSelectFile}
-          />
-        </div>
+            </span>
+          </div>
 
-        <span className="horizontal-interactions">
-          <button
-            type="button"
-            className="primary-btn"
-            onClick={encryptClicked}
-          >
-            Encrypt
+          <span className="horizontal-interactions">
+            <button
+              type="button"
+              className="primary-btn"
+              onClick={encryptClicked}
+            >
+              Encrypt
+            </button>
+            <button
+              type="button"
+              className="secondary-btn"
+              onClick={decryptClicked}
+            >
+              Decrypt
+            </button>
+          </span>
+          <button type="button" className="secondary-btn" onClick={resetFields}>
+            Reset
           </button>
-          <button
-            type="button"
-            className="secondary-btn"
-            onClick={decryptClicked}
-          >
-            Decrypt
-          </button>
-        </span>
-        <button type="button" className="secondary-btn" onClick={resetFields}>
-          Reset
-        </button>
-        
+        </section>
       </div>
     </div>
   );
