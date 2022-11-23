@@ -16,7 +16,7 @@ import {
   HiInformationCircle,
 } from "react-icons/hi";
 import { IconContext } from "react-icons";
-import { mod } from "./utils/mod";
+import { modulo } from "./utils/numbers";
 import {
   abcdef,
   colemak,
@@ -43,8 +43,6 @@ const App = () => {
     setRotationIV,
     setRotationV,
   } = useHorebCipher();
-  const { encryptRsa, decryptRsa } = useRsa();
-  const [keyFocus, setKeyFocus] = useState<number>(1);
   const textRef = useRef<HTMLTextAreaElement | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
   const fileNameRef = useRef<HTMLInputElement | null>(null);
@@ -61,7 +59,6 @@ const App = () => {
   const encryptClicked = () => {
     setEncrypted(true);
     var result = encryptHoreb(text);
-    result = encryptRsa(result);
     setText(result);
     textRef.current!.value = result;
   };
@@ -69,7 +66,6 @@ const App = () => {
   const decryptClicked = () => {
     setEncrypted(false);
     var result = decryptHoreb(text);
-    result = decryptRsa(result);
     setText(result);
     textRef.current!.value = result;
   };
@@ -86,34 +82,34 @@ const App = () => {
   };
 
   const incrementKeyI = () => {
-    setRotationI((prev: number) => mod(prev + 1, MAX_ALPHABET));
+    setRotationI((prev: number) => modulo(prev + 1, MAX_ALPHABET));
   };
   const incrementKeyII = () => {
-    setRotationII((prev: number) => mod(prev + 1, MAX_ALPHABET));
+    setRotationII((prev: number) => modulo(prev + 1, MAX_ALPHABET));
   };
   const incrementKeyIII = () => {
-    setRotationIII((prev: number) => mod(prev + 1, MAX_ALPHABET));
+    setRotationIII((prev: number) => modulo(prev + 1, MAX_ALPHABET));
   };
   const incrementKeyIV = () => {
-    setRotationIV((prev: number) => mod(prev + 1, MAX_ALPHABET));
+    setRotationIV((prev: number) => modulo(prev + 1, MAX_ALPHABET));
   };
   const incrementKeyV = () => {
-    setRotationV((prev: number) => mod(prev + 1, MAX_ALPHABET));
+    setRotationV((prev: number) => modulo(prev + 1, MAX_ALPHABET));
   };
   const decrementKeyI = () => {
-    setRotationI((prev: number) => mod(prev - 1, MAX_ALPHABET));
+    setRotationI((prev: number) => modulo(prev - 1, MAX_ALPHABET));
   };
   const decrementKeyII = () => {
-    setRotationII((prev: number) => mod(prev - 1, MAX_ALPHABET));
+    setRotationII((prev: number) => modulo(prev - 1, MAX_ALPHABET));
   };
   const decrementKeyIII = () => {
-    setRotationIII((prev: number) => mod(prev - 1, MAX_ALPHABET));
+    setRotationIII((prev: number) => modulo(prev - 1, MAX_ALPHABET));
   };
   const decrementKeyIV = () => {
-    setRotationIV((prev: number) => mod(prev - 1, MAX_ALPHABET));
+    setRotationIV((prev: number) => modulo(prev - 1, MAX_ALPHABET));
   };
   const decrementKeyV = () => {
-    setRotationV((prev: number) => mod(prev - 1, MAX_ALPHABET));
+    setRotationV((prev: number) => modulo(prev - 1, MAX_ALPHABET));
   };
 
   const uploadedFile = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { mod } from "../utils/mod";
+import { modulo, getPrime, setPublicKey, setPrivateKey } from "../utils/numbers";
 import BigNumber from "bignumber.js";
 import {
     isAlphabet,
@@ -16,40 +16,53 @@ const ACTIONS: {
 };
 
 const useRsa = () => {
-    const {
-        rotationI,
-        rotationII,
-        rotationIII,
-        rotationIV,
-        rotationV,
-    } = useHorebCipher();
     var action = 0;
-    const primeP = rotationI * rotationII;
-    const primeQ = 2;
-    const [publicKey, setpublicKey] = useState<number>(0);
-    const [privateKey, setprivateKey] = useState<number>(0);
-    const product = primeP * primeQ;
-    const totient = (primeP - 1) * (primeQ - 1);
+    var primeP = 0;
+    var primeQ = 0;
+    var publicKey = 0;
+    var privateKey = 0;
+    var product = 0;
+    var totient = 0;
 
+    const rsaConstructor = (
+        rotationI: number,
+        rotationII: number,
+        rotationIII: number,
+        rotationIV: number,
+        rotationV: number) => {
+        primeP = getPrime(rotationI + 5 * rotationII + 5)
+        primeQ = getPrime(rotationIII + 5 * rotationIV + 5);
+        product = primeP * primeQ;
+        totient = (primeP - 1) * (primeQ - 1);
+        console.log("totient", totient)
+        publicKey = setPublicKey(totient);
+        privateKey = setPrivateKey(publicKey, totient);
+        console.log("privateKey, publicKey", privateKey, publicKey);
+        console.log("totient", totient)
+    }
 
     const bigNumberProcess = (character: string): string => {
         // (char * key) % product
         const idx = abcdef.indexOf(character);
-        const bigIdx = new BigNumber(idx);
+        console.log(idx)
+        const bigIdx = new BigNumber(123);
 
         var bigKey = action === ACTIONS.ENCRYPT
             ? new BigNumber(privateKey)
-            : new BigNumber(publicKey)
+            : new BigNumber(publicKey);
 
-        const resultIdx = bigIdx.multipliedBy(bigKey).modulo(new BigNumber(product)).toNumber();
-        return abcdef[resultIdx];
+        bigIdx.multipliedBy(bigKey).modulo(20).toNumber();
+
+        return character;
+        // return abcdef[resultIdx];
     }
 
     const rsa = (text: string): string => {
+        console.log(text)
         var result = "";
         for (var textIdx = 0; textIdx < text.length; textIdx++) {
             const curr = text[textIdx];
-            console.log(curr);
+            console.log("curr", curr);
 
             if (isAlphabet(curr)) {
                 const resultCharacter = bigNumberProcess(curr);
@@ -78,10 +91,7 @@ const useRsa = () => {
         encryptRsa,
         decryptRsa,
         rsa,
-        setprimeP,
-        setprimeQ,
-        setpublicKey,
-        setprivateKey,
+        rsaConstructor,
     };
 };
 

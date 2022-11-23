@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { mod } from "../utils/mod";
+import { modulo } from "../utils/numbers";
 import {
   abcdef,
   colemak,
@@ -10,6 +10,7 @@ import {
   HALF_ALPHABET,
   isAlphabet,
 } from "../utils/alphabet";
+import useRsa from "./useRsa";
 
 const ACTIONS: {
   ENCRYPT: number;
@@ -27,6 +28,8 @@ const useCipher = () => {
   const [rotationIV, setRotationIV] = useState<number>(0);
   const [rotationV, setRotationV] = useState<number>(0);
 
+  const { encryptRsa, decryptRsa, rsaConstructor } = useRsa();
+
   const formatCharacter = (character: string): string => {
     if (character === character.toUpperCase()) {
       return character.toUpperCase();
@@ -42,60 +45,51 @@ const useCipher = () => {
     const idx = abcdef.indexOf(character.toLowerCase());
     const rotorIChar =
       action === ACTIONS.ENCRYPT
-        ? abcdef[mod(idx + rotationI, MAX_ALPHABET)]
-        : abcdef[mod(idx - rotationI, MAX_ALPHABET)];
+        ? abcdef[modulo(idx + rotationI, MAX_ALPHABET)]
+        : abcdef[modulo(idx - rotationI, MAX_ALPHABET)];
 
     // return
     const rotorIIChar = rotorII(rotorIChar);
     const rotorIICharIdx = abcdef.indexOf(rotorIIChar);
     const returnRotorIChar =
       action === ACTIONS.ENCRYPT
-        ? abcdef[mod(rotorIICharIdx + rotationI, MAX_ALPHABET)]
-        : abcdef[mod(rotorIICharIdx - rotationI, MAX_ALPHABET)];
-    // console.log(returnRotorIChar);
+        ? abcdef[modulo(rotorIICharIdx + rotationI, MAX_ALPHABET)]
+        : abcdef[modulo(rotorIICharIdx - rotationI, MAX_ALPHABET)];
 
     return formatCharacter(returnRotorIChar);
   };
 
   const rotorII = (character: string): string => {
     const idx = colemak.indexOf(character.toLowerCase());
-    console.log(idx);
     const rotorIIChar =
       action === ACTIONS.ENCRYPT
-        ? colemak[mod(idx + rotationII, MAX_ALPHABET)]
-        : colemak[mod(idx - rotationII, MAX_ALPHABET)];
-    console.log((idx - rotationII) % MAX_ALPHABET);
-    console.log(colemak[(idx - rotationII) % MAX_ALPHABET]);
-    console.log(rotorIIChar);
+        ? colemak[modulo(idx + rotationII, MAX_ALPHABET)]
+        : colemak[modulo(idx - rotationII, MAX_ALPHABET)];
 
     // return
     const rotorIIIChar = rotorIII(rotorIIChar);
     const rotorIIICharIdx = colemak.indexOf(rotorIIIChar);
     const returnRotorIIChar =
       action === ACTIONS.ENCRYPT
-        ? colemak[mod(rotorIIICharIdx + rotationII, MAX_ALPHABET)]
-        : colemak[mod(rotorIIICharIdx - rotationII, MAX_ALPHABET)];
-    // console.log(returnRotorIIChar);
+        ? colemak[modulo(rotorIIICharIdx + rotationII, MAX_ALPHABET)]
+        : colemak[modulo(rotorIIICharIdx - rotationII, MAX_ALPHABET)];
     return returnRotorIIChar;
   };
 
   const rotorIII = (character: string): string => {
-    console.log(character);
     const idx = azerty.indexOf(character.toLowerCase());
     const rotorIIIChar =
       action === ACTIONS.ENCRYPT
-        ? azerty[mod(idx + rotationIII, MAX_ALPHABET)]
-        : azerty[mod(idx - rotationIII, MAX_ALPHABET)];
-    console.log(rotorIIIChar);
+        ? azerty[modulo(idx + rotationIII, MAX_ALPHABET)]
+        : azerty[modulo(idx - rotationIII, MAX_ALPHABET)];
 
     // return
     const rotorIVChar = rotorIV(rotorIIIChar);
     const rotorIVCharIdx = azerty.indexOf(rotorIVChar);
     const returnRotorIIIChar =
       action === ACTIONS.ENCRYPT
-        ? azerty[mod(rotorIVCharIdx + rotationIII, MAX_ALPHABET)]
-        : azerty[mod(rotorIVCharIdx - rotationIII, MAX_ALPHABET)];
-    // console.log(returnRotorIIIChar);
+        ? azerty[modulo(rotorIVCharIdx + rotationIII, MAX_ALPHABET)]
+        : azerty[modulo(rotorIVCharIdx - rotationIII, MAX_ALPHABET)];
     return returnRotorIIIChar;
   };
 
@@ -103,18 +97,16 @@ const useCipher = () => {
     const idx = qwerty.indexOf(character.toLowerCase());
     const rotorIVChar =
       action === ACTIONS.ENCRYPT
-        ? qwerty[mod(idx + rotationIV, MAX_ALPHABET)]
-        : qwerty[mod(idx - rotationIV, MAX_ALPHABET)];
-    // console.log(rotorIVChar);
+        ? qwerty[modulo(idx + rotationIV, MAX_ALPHABET)]
+        : qwerty[modulo(idx - rotationIV, MAX_ALPHABET)];
 
     // return
     const rotorVChar = rotorV(rotorIVChar);
     const rotorVCharIdx = qwerty.indexOf(rotorVChar);
     const returnRotorIVChar =
       action === ACTIONS.ENCRYPT
-        ? qwerty[mod(rotorVCharIdx + rotationIV, MAX_ALPHABET)]
-        : qwerty[mod(rotorVCharIdx - rotationIV, MAX_ALPHABET)];
-    // console.log(returnRotorIVChar);
+        ? qwerty[modulo(rotorVCharIdx + rotationIV, MAX_ALPHABET)]
+        : qwerty[modulo(rotorVCharIdx - rotationIV, MAX_ALPHABET)];
     return returnRotorIVChar;
   };
 
@@ -122,22 +114,19 @@ const useCipher = () => {
     var idx = dvorak.indexOf(character.toLowerCase());
     const rotorVChar =
       action === ACTIONS.ENCRYPT
-        ? dvorak[mod(idx + rotationV, MAX_ALPHABET)]
-        : dvorak[mod(idx - rotationV, MAX_ALPHABET)];
-    // console.log(rotorVChar);
+        ? dvorak[modulo(idx + rotationV, MAX_ALPHABET)]
+        : dvorak[modulo(idx - rotationV, MAX_ALPHABET)];
 
     // return
-    console.log("second pass");
     idx = dvorak.indexOf(rotorVChar.toLowerCase());
     idx =
       action === ACTIONS.ENCRYPT
-        ? mod(idx + HALF_ALPHABET, MAX_ALPHABET)
-        : mod(idx - HALF_ALPHABET, MAX_ALPHABET);
+        ? modulo(idx + HALF_ALPHABET, MAX_ALPHABET)
+        : modulo(idx - HALF_ALPHABET, MAX_ALPHABET);
     const returnRotorVChar =
       action === ACTIONS.ENCRYPT
-        ? dvorak[mod(idx + rotationV, MAX_ALPHABET)]
-        : dvorak[mod(idx - rotationV, MAX_ALPHABET)];
-    // console.log(returnRotorVChar);
+        ? dvorak[modulo(idx + rotationV, MAX_ALPHABET)]
+        : dvorak[modulo(idx - rotationV, MAX_ALPHABET)];
     return returnRotorVChar;
   };
 
@@ -145,7 +134,6 @@ const useCipher = () => {
     var result = "";
     for (var textIdx = 0; textIdx < text.length; textIdx++) {
       const curr = text[textIdx];
-      console.log(curr);
 
       if (isAlphabet(curr)) {
         const resultCharacter = rotorI(curr);
@@ -161,17 +149,27 @@ const useCipher = () => {
   // run encryption
   const encryptHoreb = (text: string): string => {
     action = ACTIONS.ENCRYPT;
-    console.log(action);
-    return horebCipher(text);
+    rsaConstructor(
+      rotationI,
+      rotationII,
+      rotationIII,
+      rotationIV,
+      rotationV,
+    )
+    return encryptRsa(horebCipher(text));
   };
 
   // run encryption
   const decryptHoreb = (text: string): string => {
-    console.log(text);
     action = ACTIONS.DECRYPT;
-    console.log(action);
-
-    return horebCipher(text);
+    rsaConstructor(
+      rotationI,
+      rotationII,
+      rotationIII,
+      rotationIV,
+      rotationV,
+    )
+    return decryptRsa(horebCipher(text));
   };
 
   return {
