@@ -150,14 +150,16 @@ const useHoreb = () => {
   const encryptHoreb = (text: string): string => {
     action = ACTIONS.ENCRYPT;
     rsaConstructor(rotationI, rotationII, rotationIII, rotationIV, rotationV);
-    return encryptRsa(horebCipher(text));
+    // return encryptRsa(horebCipher(text));
+    return encryptRsa(text);
   };
 
   // run encryption
   const decryptHoreb = (text: string): string => {
     action = ACTIONS.DECRYPT;
     rsaConstructor(rotationI, rotationII, rotationIII, rotationIV, rotationV);
-    return horebCipher(decryptRsa(text));
+    // return horebCipher(decryptRsa(te xt));
+    return decryptRsa(text);
   };
 
   return {

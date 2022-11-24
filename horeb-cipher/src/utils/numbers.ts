@@ -1,4 +1,4 @@
-const MAX = 200;
+const MAX = 1000;
 
 export const isPrime = (number: number): boolean => {
   for (let idx = 2, s = Math.sqrt(number); idx <= s; idx++)
@@ -7,8 +7,18 @@ export const isPrime = (number: number): boolean => {
 };
 
 export const getPrime = (number: number): number => {
-  for (var idx = number - 1; idx > 0; idx--) {
+  var count = 0;
+
+  if (number < 5) {
+    number += 5;
+  }
+
+  for (var idx = 0; count !== number; idx++) {
     if (isPrime(idx)) {
+      count++;
+    }
+
+    if (count === number) {
       return idx;
     }
   }
@@ -33,8 +43,8 @@ export const isFactorOfNumber = (x: number, number: number): boolean => {
 //   * Must not be a factor of the totient
 export const setPublicKey = (totient: number): number => {
   for (var idx = 5; idx < totient; idx++) {
-    console.log(idx, isPrime(idx), isFactorOfNumber(idx, totient));
-    if (isPrime(idx) && !isFactorOfNumber(idx, totient)) {
+    console.log(idx, isPrime(idx), isFactorOfNumber(totient, idx));
+    if (isPrime(idx) && !isFactorOfNumber(totient, idx)) {
       console.log("This", idx);
       return idx;
     }
@@ -48,7 +58,7 @@ export const setPublicKey = (totient: number): number => {
 //   remainder of 1
 //   * (PRIVATE_KEY * PUBLIC_KEY) mod TOTIENT = 1
 export const setPrivateKey = (publicKey: number, totient: number): number => {
-  for (var idx = MAX; idx >= 0; idx--) {
+  for (var idx = 0; idx < MAX; idx++) {
     if (modulo(idx * publicKey, totient) === 1) {
       return idx;
     }

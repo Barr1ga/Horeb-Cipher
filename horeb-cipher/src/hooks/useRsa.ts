@@ -4,6 +4,7 @@ import {
   getPrime,
   setPublicKey,
   setPrivateKey,
+  isPrime,
 } from "../utils/numbers";
 import BigNumber from "bignumber.js";
 import { isAlphabet, abcdef } from "../utils/alphabet";
@@ -33,16 +34,25 @@ const useRsa = () => {
     rotationIV: number,
     rotationV: number
   ) => {
-    primeP = getPrime(rotationI + rotationII + 26);
-    primeQ = getPrime(rotationIII + rotationIV + 26);
+    primeP = getPrime(rotationI + 1);
+    primeQ = getPrime(rotationII + 1);
     product = primeP * primeQ;
     totient = (primeP - 1) * (primeQ - 1);
+    publicKey = setPublicKey(totient);
+    privateKey = setPrivateKey(publicKey, totient);
+
+    // primeP = 7;
+    // primeQ = 19;
+    // product = 133;
+    // totient = 108;
+    // publicKey = 29;
+    // privateKey = 41;
+
+    console.log("primeP", primeP);
+    console.log("primeQ", primeQ);
     console.log("totient", totient);
     console.log("publicKey", publicKey);
     console.log("privateKey", privateKey);
-    publicKey = setPublicKey(totient);
-    privateKey = setPrivateKey(publicKey, totient);
-    console.log("privateKey", privateKey, "publicKey", publicKey);
     console.log("totient", totient);
     console.log("product", product);
   };
@@ -54,8 +64,8 @@ const useRsa = () => {
 
     var bigKey =
       action === ACTIONS.ENCRYPT
-        ? new BigNumber(privateKey)
-        : new BigNumber(publicKey);
+        ? new BigNumber(publicKey)
+        : new BigNumber(privateKey);
 
     console.log(
       "result",
@@ -66,7 +76,7 @@ const useRsa = () => {
     );
 
     return abcdef[
-      modulo(bigIdx.exponentiatedBy(bigKey).modulo(product).toNumber(), 26)
+      bigIdx.exponentiatedBy(bigKey).modulo(product).modulo(26).toNumber()
     ];
   };
 
