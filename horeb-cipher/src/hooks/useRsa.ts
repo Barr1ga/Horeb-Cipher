@@ -7,7 +7,7 @@ import {
 } from "../utils/numbers";
 import BigNumber from "bignumber.js";
 import { isAlphabet, abcdef } from "../utils/alphabet";
-import useHorebCipher from "./useHorebCipher";
+import useHorebCipher from "./useHoreb";
 
 const ACTIONS: {
   ENCRYPT: number;
@@ -33,8 +33,8 @@ const useRsa = () => {
     rotationIV: number,
     rotationV: number
   ) => {
-    primeP = getPrime(rotationI + rotationII + 5);
-    primeQ = getPrime(rotationIII + rotationIV + 5);
+    primeP = getPrime(rotationI + rotationII + 26);
+    primeQ = getPrime(rotationIII + rotationIV + 26);
     product = primeP * primeQ;
     totient = (primeP - 1) * (primeQ - 1);
     console.log("totient", totient);
@@ -48,20 +48,26 @@ const useRsa = () => {
   };
 
   const bigNumberProcess = (character: string): string => {
-    // (char * key) % product
+    // (char ^ key) % product
     const idx = abcdef.indexOf(character);
-    console.log(idx);
-    const bigIdx = new BigNumber(123);
+    const bigIdx = new BigNumber(idx);
 
     var bigKey =
       action === ACTIONS.ENCRYPT
         ? new BigNumber(privateKey)
         : new BigNumber(publicKey);
 
-    bigIdx.multipliedBy(bigKey).modulo(20).toNumber();
+    console.log(
+      "result",
+      `(${bigIdx} ^ ${bigKey}) % ${product} = ${modulo(
+        bigIdx.exponentiatedBy(bigKey).modulo(product).toNumber(),
+        26
+      )}`
+    );
 
-    return character;
-    // return abcdef[resultIdx];
+    return abcdef[
+      modulo(bigIdx.exponentiatedBy(bigKey).modulo(product).toNumber(), 26)
+    ];
   };
 
   const rsa = (text: string): string => {

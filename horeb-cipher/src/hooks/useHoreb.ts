@@ -20,7 +20,7 @@ const ACTIONS: {
   DECRYPT: 2,
 };
 
-const useCipher = () => {
+const useHoreb = () => {
   var action = 0;
   const [rotationI, setRotationI] = useState<number>(0);
   const [rotationII, setRotationII] = useState<number>(0);
@@ -157,7 +157,7 @@ const useCipher = () => {
   const decryptHoreb = (text: string): string => {
     action = ACTIONS.DECRYPT;
     rsaConstructor(rotationI, rotationII, rotationIII, rotationIV, rotationV);
-    return decryptRsa(horebCipher(text));
+    return horebCipher(decryptRsa(text));
   };
 
   return {
@@ -176,4 +176,4 @@ const useCipher = () => {
   };
 };
 
-export default useCipher;
+export default useHoreb;

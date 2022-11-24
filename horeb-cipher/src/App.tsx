@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./App.css";
-import useHorebCipher from "./hooks/useHorebCipher";
+import useHoreb from "./hooks/useHoreb";
 import useRsa from "./hooks/useRsa";
 import TextareaAutosize from "react-textarea-autosize";
 import Logo from "./assets/horeb-cipher-logo.svg";
@@ -42,7 +42,7 @@ const App = () => {
     setRotationIII,
     setRotationIV,
     setRotationV,
-  } = useHorebCipher();
+  } = useHoreb();
   const textRef = useRef<HTMLTextAreaElement | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
   const fileNameRef = useRef<HTMLInputElement | null>(null);
