@@ -36,6 +36,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  transition: 0.2s ease-in 0s;
 }
 
 .logo .icon {
@@ -52,21 +53,21 @@
 }
 
 .info {
-  opacity: 0.3;
   display: flex;
   align-items: center;
-  transition: 0.1s ease-in 0s;
-}
-
-.info:hover {
-  opacity: 1;
-  transition: 0.1s ease-in 0s;
 }
 
 .info svg {
+  opacity: 0.3;
   height: 20px;
   width: 20px;
   cursor: pointer;
+  /* transition: 0.1s ease-in 0s; */
+}
+
+.info svg:hover {
+  opacity: 1;
+  /* transition: 0.1s ease-in 0s; */
 }
 
 .container {
@@ -136,7 +137,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .input .interactions > div:nth-child(2) {
@@ -156,27 +157,30 @@
 }
 
 .input .download,
+.input .hash,
 .input .upload {
   height: 20px;
   width: 20px;
-  opacity: 0.3;
-  transition: 0.1s ease-in 0s;
   cursor: pointer;
   display: flex;
   justify-content: center;
 }
 
-.input .download:hover,
-.input .upload:hover {
-  opacity: 1;
-  transition: 0.1s ease-in 0s;
-}
-
 .input .download svg,
+.input .hash svg,
 .input .upload svg {
+  opacity: 0.3;
   height: 20px;
   width: 20px;
   cursor: pointer;
+  /* transition: 0.1s ease-in 0s; */
+}
+
+.input .download svg:hover,
+.input .hash svg:hover,
+.input .upload svg:hover {
+  opacity: 1;
+  /* transition: 0.1s ease-in 0s; */
 }
 
 .input .filename {
@@ -215,7 +219,7 @@
   background: transparent;
   border: none;
   resize: none;
-  transition: 0.05s ease-in 0s;
+  /* transition: 0.05s ease-in 0s; */
   color: var(--white);
   font-size: 1rem;
 }
@@ -255,23 +259,28 @@
 *::-webkit-scrollbar-thumb {
   background-color: var(--gray);
   border-radius: 10px;
-  border: 6px solid var(--input);
+  border: 10px solid var(--input);
 }
 
 hr {
-  margin: 20px auto;
-  opacity: 0.1;
-  width: 20px;
+  opacity: 0.05;
+  margin: 10px 0 0 0;
+  width: 100%;
 }
 
 .horizontal-interactions {
   display: flex;
   flex: 1;
-  gap: 15px;
+  gap: 10px;
+  transition: 0.2s ease-in 0s;
 }
 
 .horizontal-interactions button {
   flex: 1;
+}
+
+.keys-label {
+  transition: 0.2s ease-in 0s;
 }
 
 .keys {
@@ -279,6 +288,7 @@ hr {
   justify-content: center;
   align-items: center;
   gap: 10px;
+  transition: 0.2s ease-in 0s;
 }
 
 .keys .key {
@@ -351,12 +361,18 @@ hr {
 }
 
 .upload label + .tooltip {
-  width: 85px;
-  left: -42px;
+  width: 108px;
+  left: -54px;
   right: -42px;
 }
 
 .download label + .tooltip {
+  width: 123px;
+  left: -62px;
+  right: -42px;
+}
+
+.hash label + .tooltip {
   width: 100px;
   left: -50px;
   right: -42px;
@@ -379,6 +395,11 @@ hr {
   transition: 0.1s ease-in 0s;
 }
 
+.hash label:hover + .tooltip {
+  opacity: 1;
+  transition: 0.1s ease-in 0s;
+}
+
 .info label:hover + .tooltip {
   opacity: 1;
   transition: 0.1s ease-in 0s;
@@ -395,4 +416,15 @@ hr {
 .about p {
   opacity: 0.9;
   font-weight: 200;
+}
+
+.hash-interactions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.blurred {
+  opacity: 0.3;
+  filter: blur(3px);
+  transition: 0.2s ease-in 0s;
 }

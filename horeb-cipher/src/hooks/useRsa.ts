@@ -7,7 +7,7 @@ import {
   isPrime,
 } from "../utils/numbers";
 import BigNumber from "bignumber.js";
-import { isAlphabet, abcdef } from "../utils/alphabet";
+import { isAlphabet, abcdef, azerty } from "../utils/alphabet";
 import useHorebCipher from "./useHoreb";
 
 const ACTIONS: {
@@ -62,8 +62,7 @@ const useRsa = () => {
   const bigNumberProcess = (curr: string): string => {
     // (char ^ key) % product
     const idx =
-      action === ACTIONS.ENCRYPT
-        ? abcdef.indexOf(curr) : parseInt(curr);
+      action === ACTIONS.ENCRYPT ? abcdef.indexOf(curr) : parseInt(curr);
     const bigIdx = new BigNumber(idx);
 
     console.log(idx);
@@ -75,21 +74,27 @@ const useRsa = () => {
 
     console.log(
       "result",
-      `(${bigIdx} ^ ${bigKey}) % ${product} = ${bigIdx.exponentiatedBy(bigKey).modulo(product).toNumber()}`
+      `(${bigIdx} ^ ${bigKey}) % ${product} = ${bigIdx
+        .exponentiatedBy(bigKey)
+        .modulo(product)
+        .toNumber()}`
     );
 
     if (action === ACTIONS.ENCRYPT) {
-      return bigIdx.exponentiatedBy(bigKey).modulo(product).toNumber().toString();
+      return bigIdx
+        .exponentiatedBy(bigKey)
+        .modulo(product)
+        .toNumber()
+        .toString();
     } else {
       return abcdef[bigIdx.exponentiatedBy(bigKey).modulo(product).toNumber()];
     }
   };
 
   const rsa = (text: string): string => {
-
     // ab c
     // 1 2 X3
-    // ab c 
+    // ab c
     var result = "";
 
     if (action === ACTIONS.ENCRYPT) {
@@ -98,8 +103,8 @@ const useRsa = () => {
       for (var textIdx = 0; textIdx < length; textIdx++) {
         var curr = text[textIdx];
 
-        if (curr === ' ') {
-          result = result.concat(abcdef[padding].toUpperCase());
+        if (curr === " ") {
+          result = result.concat(azerty[padding].toUpperCase());
         } else {
           if (isAlphabet(curr)) {
             result = result.concat(bigNumberProcess(curr));
@@ -107,19 +112,19 @@ const useRsa = () => {
         }
 
         if (textIdx !== length - 1) {
-          result = result.concat(' ');
+          result = result.concat(" ");
         }
       }
     }
 
     if (action === ACTIONS.DECRYPT) {
-      const length = text.split(' ').length;
+      const length = text.split(" ").length;
 
       for (var textIdx = 0; textIdx < length; textIdx++) {
-        var curr = text.split(' ')[textIdx];
+        var curr = text.split(" ")[textIdx];
 
         if (isAlphabet(curr)) {
-          result = result.concat(' ');
+          result = result.concat(" ");
         }
 
         if (!isAlphabet(curr)) {

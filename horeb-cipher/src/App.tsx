@@ -14,6 +14,7 @@ import {
   HiOutlineCheck,
   HiCheck,
   HiInformationCircle,
+  HiOutlineDocumentText,
 } from "react-icons/hi";
 import { IconContext } from "react-icons";
 import { modulo } from "./utils/numbers";
@@ -28,6 +29,7 @@ import {
 
 const App = () => {
   const [text, setText] = useState<string>("");
+  const [isFocus, setIsFocus] = useState<boolean>(false);
   const [encrypted, setEncrypted] = useState<boolean>(false);
   const {
     encryptHoreb,
@@ -155,7 +157,7 @@ const App = () => {
     <div className="App">
       <div className="container">
         <section>
-          <div className="logo">
+          <div className={isFocus ? "logo blurred" : "logo"}>
             <div className="icon">
               <img src={Logo} alt={"horeb-cipher-logo"} />
             </div>
@@ -174,8 +176,10 @@ const App = () => {
             </div>
           </div>
 
-          <label>Cipher key</label>
-          <span className="keys">
+          <label className={isFocus ? "blurred keys-label" : "keys-label"}>
+            Cipher key
+          </label>
+          <span className={isFocus ? "keys blurred" : "keys"}>
             <div className="key">
               <div className="arrows">
                 <div className="arrow" onClick={incrementKeyI}>
@@ -242,7 +246,10 @@ const App = () => {
               className="form-control"
               minRows={5}
               maxRows={15}
+              onFocus={() => setIsFocus(true)}
+              onBlur={() => setIsFocus(false)}
             />
+            <hr></hr>
             <span className="interactions">
               {text.length === 0 ? (
                 <div></div>
@@ -274,13 +281,14 @@ const App = () => {
                         <HiOutlineDownload></HiOutlineDownload>
                       </label>
                       <div className="tooltip">
-                        {"Download File"}
+                        {"Download Message"}
                         <div className="arrow-down"></div>
                       </div>
                     </div>
                   </div>
                 </span>
               )}
+
               <div>
                 <div className="text-length">{text.length}</div>
                 <span className="upload">
@@ -288,8 +296,9 @@ const App = () => {
                     <label htmlFor="upload-photo">
                       <HiOutlineUpload></HiOutlineUpload>
                     </label>
+
                     <div className="tooltip">
-                      {"Upload File"}
+                      {"Upload Message"}
                       <div className="arrow-down"></div>
                     </div>
                   </div>
@@ -307,7 +316,13 @@ const App = () => {
             </span>
           </div>
 
-          <span className="horizontal-interactions">
+          <span
+            className={
+              isFocus
+                ? "horizontal-interactions blurred"
+                : "horizontal-interactions"
+            }
+          >
             <button
               type="button"
               className="primary-btn"
@@ -323,7 +338,11 @@ const App = () => {
               Decrypt
             </button>
           </span>
-          <button type="button" className="secondary-btn" onClick={resetFields}>
+          <button
+            type="button"
+            className={isFocus ? "secondary-btn blurred" : "secondary-btn"}
+            onClick={resetFields}
+          >
             Reset
           </button>
         </section>
