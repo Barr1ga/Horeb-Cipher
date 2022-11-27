@@ -458,3 +458,34 @@ hr {
 .state .error {
   color: var(--error);
 }
+
+.shortcut-keys {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+  gap: 5px;
+  transition: 0.2s ease-in 0s;
+}
+
+.shortcut-keys span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.shortcut-keys span .group {
+  display: flex;
+  gap: 10px;
+}
+
+.shortcut-keys .key {
+  display: flex;
+  align-items: center;
+  background-color: var(--gray);
+  padding: 3px 6px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}

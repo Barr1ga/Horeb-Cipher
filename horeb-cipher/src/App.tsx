@@ -191,8 +191,8 @@ const App = () => {
       resetFields();
     }
 
-    if (e.key === "enter") {
-      resetFields();
+    if (e.altKey && e.key === "Enter") {
+      encryptClicked();
     }
   };
 
@@ -411,19 +411,28 @@ const App = () => {
           >
             Reset
           </button>
+          <div className={isFocus ? "shortcut-keys blurred" : "shortcut-keys"}>
+            <span>
+              <div className="key">ALT</div>+
+              <div className="group">
+                (<div className="key">1</div> / <div className="key">ENTER</div>
+                )
+              </div>{" "}
+              — Encrypt
+            </span>
+            <span>
+              <div className="key">ALT</div>+<div className="key">2</div> —
+              Decrypt
+            </span>{" "}
+            <span>
+              <div className="key">ALT</div>+
+              <div className="group">
+                (<div className="key">3</div> / <div className="key">R</div>)
+              </div>{" "}
+              — Decrypt
+            </span>
+          </div>
         </section>
-        <div className="shortcut-keys">
-          <span>
-            <div className="key">ALT</div>+<div className="key">1</div>
-          </span>
-          <span>
-            <div className="key">ALT</div>+<div className="key">2</div>
-          </span>
-
-          <span>
-            <div className="key">ALT</div>+<div className="key">3</div>
-          </span>
-        </div>
       </div>
     </div>
   );
