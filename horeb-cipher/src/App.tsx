@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, HtmlHTMLAttributes } from "react";
 import "./App.css";
 import useHoreb from "./hooks/useHoreb";
 import useRsa from "./hooks/useRsa";
@@ -50,12 +50,17 @@ const App = () => {
   } = useHoreb();
   const textRef = useRef<HTMLTextAreaElement | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
+  const appRef = useRef<any | null>(null);
   const fileNameRef = useRef<HTMLInputElement | null>(null);
   const [filename, setFilename] = useState<string>("message");
 
   useEffect(() => {
     document.title = "Horeb Cipher";
   }, []);
+
+  useEffect(() => {
+    appRef.current.focus();
+  }, [appRef]);
 
   const updatePlainText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setIsError(false);
@@ -87,6 +92,7 @@ const App = () => {
     setRotationIV(0);
     setRotationV(0);
     setIsVerified(false);
+    setIsError(false);
   };
 
   const incrementKeyI = () => {
@@ -170,8 +176,28 @@ const App = () => {
     }, 200);
   };
 
+  const keyDownPressed = (e: any) => {
+    console.log(e.key);
+
+    if (e.altKey && e.key === "1") {
+      encryptClicked();
+    }
+
+    if (e.altKey && e.key === "2") {
+      decryptClicked();
+    }
+
+    if (e.altKey && e.key === "3") {
+      resetFields();
+    }
+
+    if (e.key === "enter") {
+      resetFields();
+    }
+  };
+
   return (
-    <div className="App">
+    <div className="App" onKeyDown={keyDownPressed} tabIndex={0} ref={appRef}>
       <div className="container">
         <section>
           <div className={isFocus ? "logo blurred" : "logo"}>
@@ -386,22 +412,21 @@ const App = () => {
             Reset
           </button>
         </section>
+        <div className="shortcut-keys">
+          <span>
+            <div className="key">ALT</div>+<div className="key">1</div>
+          </span>
+          <span>
+            <div className="key">ALT</div>+<div className="key">2</div>
+          </span>
+
+          <span>
+            <div className="key">ALT</div>+<div className="key">3</div>
+          </span>
+        </div>
       </div>
     </div>
   );
 };
 
 export default App;
-// v
-// abcdefghijklmnopqrstuvwxyz
-//      v
-// abcdefghijklmnopqrstuvwxyz
-//        v
-// abcdefghijklmnopqrstuvwxyz
-//    v
-// abcdefghijklmnopqrstuvwxyz
-//     v
-// abcdefghijklmnopqrstuvwxyz
-//           v
-// abcdefghijklmnopqrstuvwxyz
-//

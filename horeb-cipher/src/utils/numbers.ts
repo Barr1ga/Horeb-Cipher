@@ -43,9 +43,7 @@ export const isFactorOfNumber = (x: number, number: number): boolean => {
 //   * Must not be a factor of the totient
 export const setPublicKey = (totient: number): number => {
   for (var idx = 5; idx < totient; idx++) {
-    console.log(idx, isPrime(idx), isFactorOfNumber(totient, idx));
     if (isPrime(idx) && !isFactorOfNumber(totient, idx)) {
-      console.log("This", idx);
       return idx;
     }
   }
@@ -69,4 +67,4 @@ export const setPrivateKey = (publicKey: number, totient: number): number => {
 
 export const randomIntFromInterval = (min: number, max: number): number => {
   return Math.floor(Math.random() * (max - min + 1) + min);
-}
+};

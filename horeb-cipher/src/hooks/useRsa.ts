@@ -1,3 +1,4 @@
+import { isNumeric } from "./../utils/alphabet";
 import React, { useState } from "react";
 import {
   modulo,
@@ -8,7 +9,14 @@ import {
   isPrime,
 } from "../utils/numbers";
 import BigNumber from "bignumber.js";
-import { isAlphabet, abcdef, azerty, isUpperCase, isSpecialCharacter, MAX_ALPHABET_IDX } from "../utils/alphabet";
+import {
+  isAlphabet,
+  abcdef,
+  azerty,
+  isUpperCase,
+  isSpecialCharacter,
+  MAX_ALPHABET_IDX,
+} from "../utils/alphabet";
 
 const ACTIONS: {
   ENCRYPT: number;
@@ -40,20 +48,14 @@ const useRsa = () => {
     totient = (primeP - 1) * (primeQ - 1);
     publicKey = setPublicKey(totient);
     privateKey = setPrivateKey(publicKey, totient);
-
-    // console.log("primeP", primeP);
-    // console.log("primeQ", primeQ);
-    // console.log("totient", totient);
-    // console.log("publicKey", publicKey);
-    // console.log("privateKey", privateKey);
-    // console.log("totient", totient);
-    // console.log("product", product);
   };
 
   const bigNumberProcess = (curr: string): string => {
     // (char ^ key) % product
     const idx =
-      action === ACTIONS.ENCRYPT ? abcdef.indexOf(curr.toLowerCase()) : parseInt(curr);
+      action === ACTIONS.ENCRYPT
+        ? abcdef.indexOf(curr.toLowerCase())
+        : parseInt(curr);
     const bigIdx = new BigNumber(idx);
     var bigKey =
       action === ACTIONS.ENCRYPT
@@ -75,7 +77,6 @@ const useRsa = () => {
   const encryptRsa = (text: string): string => {
     action = ACTIONS.ENCRYPT;
     var result = "";
-
     const length = text.length;
 
     for (var textIdx = 0; textIdx < length; textIdx++) {
@@ -83,27 +84,44 @@ const useRsa = () => {
 
       // if current is a uppercase, concat ` at the start of the rsa result
       if (curr === "\n") {
-        result = result.concat('\n');
+        result = result.concat("\n");
       } else {
         if (isAlphabet(curr)) {
           if (isUpperCase(curr)) {
-            result = result.concat('`');
+            result = result.concat("`");
           }
 
           // calculate rsa value of current character
           result = result.concat(bigNumberProcess(curr));
 
+          // if current is a number, concat ~ at the start of the number
+        } else if (isNumeric(curr)) {
+          result = result.concat("~");
+          var number = "";
+          // e 12
+          do {
+            number = number.concat(text[textIdx]);
+            textIdx++;
+          } while (textIdx < length && isNumeric(text[textIdx]));
+          textIdx--;
+
+          result = result.concat(number);
+
           // if current is a space, concat some random uppercase character into the result
         } else if (curr === " " && !isSpecialCharacter(curr)) {
-          result = result.concat(azerty[randomIntFromInterval(0, MAX_ALPHABET_IDX)].toUpperCase());
+          result = result.concat(
+            azerty[randomIntFromInterval(0, MAX_ALPHABET_IDX)].toUpperCase()
+          );
 
           // if current is some other character, direct copy and concat into the result
         } else {
           result = result.concat(curr);
         }
 
-        if (text[textIdx + 1] !== "\n" && textIdx !== length - 1) {
-          result = result.concat(azerty[randomIntFromInterval(0, MAX_ALPHABET_IDX)].toLowerCase());
+        if (text[textIdx + 1] !== "\n" && textIdx < length - 1) {
+          result = result.concat(
+            azerty[randomIntFromInterval(0, MAX_ALPHABET_IDX)].toLowerCase()
+          );
         }
       }
     }
@@ -117,30 +135,36 @@ const useRsa = () => {
 
     var result = "";
     text = text.replaceAll("\n", " \n ").replaceAll(/[a-z]/g, " ");
-    
+
     const length = text.split(" ").length;
 
     for (var textIdx = 0; textIdx < length; textIdx++) {
       var curr = text.split(" ")[textIdx];
-      
+
       // if current is a uppercase character, concat space character into the result
       if (curr === "\n") {
-        result = result.concat('\n');
+        result = result.concat("\n");
       } else {
         if (isAlphabet(curr) && isUpperCase(curr)) {
           result = result.concat(" ");
+
+          // if current starts with ~, direct copy as it is a number
+        } else if (curr.startsWith("~")) {
+          result = result.concat(curr.slice(1));
 
           // if current is a special character, direct copy and concat into the result
         } else if (isSpecialCharacter(curr)) {
           result = result.concat(curr);
 
           // if current current is a number, calculate rsa value and display appropriate character
+        } else if (curr.startsWith("`")) {
+          result = result.concat(bigNumberProcess(curr.slice(1)).toUpperCase());
         } else {
-          result = curr.startsWith("`") ? result = result.concat(bigNumberProcess(curr.slice(1)).toUpperCase()) : result = result.concat(bigNumberProcess(curr));
+          result = result.concat(bigNumberProcess(curr));
         }
       }
     }
-    
+
     return result;
   };
 

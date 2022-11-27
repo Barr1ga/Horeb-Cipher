@@ -151,7 +151,7 @@ const useHoreb = () => {
   // run encryption
   const encryptHoreb = (text: string): string => {
     action = ACTIONS.ENCRYPT;
-    
+
     setIsVerified(false);
     setIsError(false);
 
@@ -159,7 +159,10 @@ const useHoreb = () => {
 
     const result = encryptRsa(text);
 
-    if (result.includes("undefined") || result.replaceAll(" ", "").length === 0) {
+    if (
+      result.includes("undefined") ||
+      result.replaceAll(" ", "").length === 0
+    ) {
       setIsError(true);
       return "Encryption Error";
     }
@@ -178,7 +181,10 @@ const useHoreb = () => {
 
     const result = decryptRsa(text);
 
-    if (result.includes("undefined") || result.replaceAll(" ", "").length === 0) {
+    if (
+      result.includes("undefined") ||
+      result.replaceAll(" ", "").length === 0
+    ) {
       setIsError(true);
       return "Decryption Error";
     }
