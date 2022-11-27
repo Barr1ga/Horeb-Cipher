@@ -4,6 +4,7 @@ export const azerty = "azertyuiopqsdfghjklmwxcvbn";
 export const qwerty = "qwertyuiopasdfghjklzxcvbnm";
 export const dvorak = "pyfgcrlaoeuidhtnsqjkxbmwvz";
 export const MAX_ALPHABET = 26;
+export const MAX_ALPHABET_IDX = MAX_ALPHABET - 1;
 export const HALF_ALPHABET = MAX_ALPHABET / 2;
 
 export const isAlphabet = (character: string): boolean => {
@@ -13,3 +14,19 @@ export const isAlphabet = (character: string): boolean => {
 
     return false;
 };
+
+export const isUpperCase = (character: string): boolean => {
+    if (/^[A-Z]*$/.test(character)) {
+        return true;
+    }
+
+    return false;
+}
+
+export const isSpecialCharacter = (character: string): boolean => {
+    if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(character)) {
+        return true;
+    }
+
+    return false;
+}

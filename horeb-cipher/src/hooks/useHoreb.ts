@@ -22,6 +22,8 @@ const ACTIONS: {
 
 const useHoreb = () => {
   var action = 0;
+  const [isVerified, setIsVerified] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
   const [rotationI, setRotationI] = useState<number>(0);
   const [rotationII, setRotationII] = useState<number>(0);
   const [rotationIII, setRotationIII] = useState<number>(0);
@@ -149,20 +151,47 @@ const useHoreb = () => {
   // run encryption
   const encryptHoreb = (text: string): string => {
     action = ACTIONS.ENCRYPT;
+    
+    setIsVerified(false);
+    setIsError(false);
+
     rsaConstructor(rotationI, rotationII, rotationIII, rotationIV, rotationV);
-    // return encryptRsa(horebCipher(text));
-    return encryptRsa(text);
+
+    const result = encryptRsa(text);
+
+    if (result.includes("undefined") || result.replaceAll(" ", "").length === 0) {
+      setIsError(true);
+      return "Encryption Error";
+    }
+
+    setIsVerified(true);
+    return result;
   };
 
   // run encryption
   const decryptHoreb = (text: string): string => {
     action = ACTIONS.DECRYPT;
     rsaConstructor(rotationI, rotationII, rotationIII, rotationIV, rotationV);
-    // return horebCipher(decryptRsa(te xt));
-    return decryptRsa(text);
+
+    setIsVerified(false);
+    setIsError(false);
+
+    const result = decryptRsa(text);
+
+    if (result.includes("undefined") || result.replaceAll(" ", "").length === 0) {
+      setIsError(true);
+      return "Decryption Error";
+    }
+
+    setIsVerified(true);
+    return result;
   };
 
   return {
+    isError,
+    setIsError,
+    isVerified,
+    setIsVerified,
     encryptHoreb,
     decryptHoreb,
     rotationI,

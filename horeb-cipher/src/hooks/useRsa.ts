@@ -4,11 +4,11 @@ import {
   getPrime,
   setPublicKey,
   setPrivateKey,
+  randomIntFromInterval,
   isPrime,
 } from "../utils/numbers";
 import BigNumber from "bignumber.js";
-import { isAlphabet, abcdef, azerty } from "../utils/alphabet";
-import useHorebCipher from "./useHoreb";
+import { isAlphabet, abcdef, azerty, isUpperCase, isSpecialCharacter, MAX_ALPHABET_IDX } from "../utils/alphabet";
 
 const ACTIONS: {
   ENCRYPT: number;
@@ -26,7 +26,6 @@ const useRsa = () => {
   var privateKey = 0;
   var product = 0;
   var totient = 0;
-  var padding = 0;
 
   const rsaConstructor = (
     rotationI: number,
@@ -41,44 +40,25 @@ const useRsa = () => {
     totient = (primeP - 1) * (primeQ - 1);
     publicKey = setPublicKey(totient);
     privateKey = setPrivateKey(publicKey, totient);
-    padding = rotationIII;
 
-    // primeP = 7;
-    // primeQ = 19;
-    // product = 133;
-    // totient = 108;
-    // publicKey = 29;
-    // privateKey = 41;
-
-    console.log("primeP", primeP);
-    console.log("primeQ", primeQ);
-    console.log("totient", totient);
-    console.log("publicKey", publicKey);
-    console.log("privateKey", privateKey);
-    console.log("totient", totient);
-    console.log("product", product);
+    // console.log("primeP", primeP);
+    // console.log("primeQ", primeQ);
+    // console.log("totient", totient);
+    // console.log("publicKey", publicKey);
+    // console.log("privateKey", privateKey);
+    // console.log("totient", totient);
+    // console.log("product", product);
   };
 
   const bigNumberProcess = (curr: string): string => {
     // (char ^ key) % product
     const idx =
-      action === ACTIONS.ENCRYPT ? abcdef.indexOf(curr) : parseInt(curr);
+      action === ACTIONS.ENCRYPT ? abcdef.indexOf(curr.toLowerCase()) : parseInt(curr);
     const bigIdx = new BigNumber(idx);
-
-    console.log(idx);
-
     var bigKey =
       action === ACTIONS.ENCRYPT
         ? new BigNumber(privateKey)
         : new BigNumber(publicKey);
-
-    console.log(
-      "result",
-      `(${bigIdx} ^ ${bigKey}) % ${product} = ${bigIdx
-        .exponentiatedBy(bigKey)
-        .modulo(product)
-        .toNumber()}`
-    );
 
     if (action === ACTIONS.ENCRYPT) {
       return bigIdx
@@ -91,44 +71,39 @@ const useRsa = () => {
     }
   };
 
-  const rsa = (text: string): string => {
-    // ab c
-    // 1 2 X3
-    // ab c
+  // run encryption
+  const encryptRsa = (text: string): string => {
+    action = ACTIONS.ENCRYPT;
     var result = "";
 
-    if (action === ACTIONS.ENCRYPT) {
-      const length = text.length;
+    const length = text.length;
 
-      for (var textIdx = 0; textIdx < length; textIdx++) {
-        var curr = text[textIdx];
+    for (var textIdx = 0; textIdx < length; textIdx++) {
+      var curr = text[textIdx];
 
-        if (curr === " ") {
-          result = result.concat(azerty[padding].toUpperCase());
-        } else {
-          if (isAlphabet(curr)) {
-            result = result.concat(bigNumberProcess(curr));
-          }
-        }
-
-        if (textIdx !== length - 1) {
-          result = result.concat(" ");
-        }
-      }
-    }
-
-    if (action === ACTIONS.DECRYPT) {
-      const length = text.split(" ").length;
-
-      for (var textIdx = 0; textIdx < length; textIdx++) {
-        var curr = text.split(" ")[textIdx];
-
+      // if current is a uppercase, concat ` at the start of the rsa result
+      if (curr === "\n") {
+        result = result.concat('\n');
+      } else {
         if (isAlphabet(curr)) {
-          result = result.concat(" ");
+          if (isUpperCase(curr)) {
+            result = result.concat('`');
+          }
+
+          // calculate rsa value of current character
+          result = result.concat(bigNumberProcess(curr));
+
+          // if current is a space, concat some random uppercase character into the result
+        } else if (curr === " " && !isSpecialCharacter(curr)) {
+          result = result.concat(azerty[randomIntFromInterval(0, MAX_ALPHABET_IDX)].toUpperCase());
+
+          // if current is some other character, direct copy and concat into the result
+        } else {
+          result = result.concat(curr);
         }
 
-        if (!isAlphabet(curr)) {
-          result = result.concat(bigNumberProcess(curr));
+        if (text[textIdx + 1] !== "\n" && textIdx !== length - 1) {
+          result = result.concat(azerty[randomIntFromInterval(0, MAX_ALPHABET_IDX)].toLowerCase());
         }
       }
     }
@@ -137,21 +112,41 @@ const useRsa = () => {
   };
 
   // run encryption
-  const encryptRsa = (text: string): string => {
-    action = ACTIONS.ENCRYPT;
-    return rsa(text);
-  };
-
-  // run encryption
   const decryptRsa = (text: string): string => {
     action = ACTIONS.DECRYPT;
-    return rsa(text);
+
+    var result = "";
+    text = text.replaceAll("\n", " \n ").replaceAll(/[a-z]/g, " ");
+    
+    const length = text.split(" ").length;
+
+    for (var textIdx = 0; textIdx < length; textIdx++) {
+      var curr = text.split(" ")[textIdx];
+      
+      // if current is a uppercase character, concat space character into the result
+      if (curr === "\n") {
+        result = result.concat('\n');
+      } else {
+        if (isAlphabet(curr) && isUpperCase(curr)) {
+          result = result.concat(" ");
+
+          // if current is a special character, direct copy and concat into the result
+        } else if (isSpecialCharacter(curr)) {
+          result = result.concat(curr);
+
+          // if current current is a number, calculate rsa value and display appropriate character
+        } else {
+          result = curr.startsWith("`") ? result = result.concat(bigNumberProcess(curr.slice(1)).toUpperCase()) : result = result.concat(bigNumberProcess(curr));
+        }
+      }
+    }
+    
+    return result;
   };
 
   return {
     encryptRsa,
     decryptRsa,
-    rsa,
     rsaConstructor,
   };
 };

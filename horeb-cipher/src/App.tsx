@@ -9,12 +9,10 @@ import {
   HiChevronUp,
   HiOutlineDownload,
   HiOutlineUpload,
-  HiPencil,
-  HiOutlineQrcode,
-  HiOutlineCheck,
-  HiCheck,
   HiInformationCircle,
-  HiOutlineDocumentText,
+  HiCheck,
+  HiOutlineDocumentDuplicate,
+  HiOutlineExclamation,
 } from "react-icons/hi";
 import { IconContext } from "react-icons";
 import { modulo } from "./utils/numbers";
@@ -31,7 +29,12 @@ const App = () => {
   const [text, setText] = useState<string>("");
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [encrypted, setEncrypted] = useState<boolean>(false);
+  const [copied, setCopied] = useState<boolean>(false);
   const {
+    isError,
+    setIsError,
+    isVerified,
+    setIsVerified,
     encryptHoreb,
     decryptHoreb,
     rotationI,
@@ -55,6 +58,8 @@ const App = () => {
   }, []);
 
   const updatePlainText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setIsError(false);
+    setIsVerified(false);
     setText(e.target.value);
   };
 
@@ -81,6 +86,7 @@ const App = () => {
     setRotationIII(0);
     setRotationIV(0);
     setRotationV(0);
+    setIsVerified(false);
   };
 
   const incrementKeyI = () => {
@@ -151,6 +157,17 @@ const App = () => {
       "noopener,noreferrer"
     );
     if (newWindow) newWindow.opener = null;
+  };
+
+  const copyToClipboard = () => {
+    setCopied(true);
+    navigator.clipboard.writeText(text);
+  };
+
+  const copiedFalse = () => {
+    setTimeout(function () {
+      setCopied(false);
+    }, 200);
   };
 
   return (
@@ -290,6 +307,14 @@ const App = () => {
               )}
 
               <div>
+                <div className="state">
+                  <div className="success">
+                    {isVerified && <HiCheck></HiCheck>}
+                  </div>
+                  <div className="error">
+                    {isError && <HiOutlineExclamation></HiOutlineExclamation>}
+                  </div>
+                </div>
                 <div className="text-length">{text.length}</div>
                 <span className="upload">
                   <div className="tooltip-container">
@@ -312,6 +337,21 @@ const App = () => {
                   }
                   // onChange={onSelectFile}
                 />
+                <span className="copy">
+                  <div className="tooltip-container">
+                    <label onClick={copyToClipboard} onMouseLeave={copiedFalse}>
+                      <HiOutlineDocumentDuplicate></HiOutlineDocumentDuplicate>
+                    </label>
+
+                    <div
+                      className="tooltip"
+                      style={{ width: copied ? "50px" : "93px" }}
+                    >
+                      {copied ? "Copied!" : "Copy Message"}
+                      <div className="arrow-down"></div>
+                    </div>
+                  </div>
+                </span>
               </div>
             </span>
           </div>

@@ -11,6 +11,7 @@
   --white: #c8ccd8;
   --gray: #3a3c42;
   --black: #141519;
+  --error: rgb(228, 74, 74);
 }
 
 * {
@@ -18,6 +19,12 @@
   padding: 0;
   font-family: "Roboto Mono", monospace;
   caret-color: var(--primary-accent);
+}
+
+svg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .App {
@@ -158,7 +165,8 @@
 
 .input .download,
 .input .hash,
-.input .upload {
+.input .upload,
+.input .copy {
   height: 20px;
   width: 20px;
   cursor: pointer;
@@ -168,7 +176,8 @@
 
 .input .download svg,
 .input .hash svg,
-.input .upload svg {
+.input .upload svg,
+.input .copy svg {
   opacity: 0.3;
   height: 20px;
   width: 20px;
@@ -178,7 +187,8 @@
 
 .input .download svg:hover,
 .input .hash svg:hover,
-.input .upload svg:hover {
+.input .upload svg:hover,
+.input .copy svg:hover {
   opacity: 1;
   /* transition: 0.1s ease-in 0s; */
 }
@@ -242,24 +252,24 @@
 }
 
 /* Firefox */
-* {
+.form-control {
   scrollbar-width: auto;
   scrollbar-color: var(--black) var(--white);
 }
 
 /* Chrome, Edge, and Safari */
-*::-webkit-scrollbar {
-  width: 15px;
+.form-control::-webkit-scrollbar {
+  width: 10px;
 }
 
-*::-webkit-scrollbar-track {
+.form-control::-webkit-scrollbar-track {
   background: transparent;
 }
 
-*::-webkit-scrollbar-thumb {
+.form-control::-webkit-scrollbar-thumb {
   background-color: var(--gray);
   border-radius: 10px;
-  border: 10px solid var(--input);
+  border: 3px solid var(--input);
 }
 
 hr {
@@ -378,6 +388,11 @@ hr {
   right: -42px;
 }
 
+.copy label + .tooltip {
+  left: -45px;
+  right: -42px;
+}
+
 .info label + .tooltip {
   bottom: 35px;
   width: 35px;
@@ -385,22 +400,11 @@ hr {
   right: -50px;
 }
 
-.filename label:hover + .tooltip {
-  opacity: 1;
-  transition: 0.1s ease-in 0s;
-}
-
-.upload label:hover + .tooltip {
-  opacity: 1;
-  transition: 0.1s ease-in 0s;
-}
-
-.hash label:hover + .tooltip {
-  opacity: 1;
-  transition: 0.1s ease-in 0s;
-}
-
-.info label:hover + .tooltip {
+.filename label:hover + .tooltip,
+.upload label:hover + .tooltip,
+.hash label:hover + .tooltip,
+.info label:hover + .tooltip,
+.copy label:hover + .tooltip {
   opacity: 1;
   transition: 0.1s ease-in 0s;
 }
@@ -427,4 +431,30 @@ hr {
   opacity: 0.3;
   filter: blur(3px);
   transition: 0.2s ease-in 0s;
+}
+
+.state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.state svg {
+  height: 20px;
+  width: 20px;
+}
+
+.state .success,
+.state .error {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.state .success {
+  color: var(--primary-accent);
+}
+
+.state .error {
+  color: var(--error);
 }
