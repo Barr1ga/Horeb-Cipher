@@ -179,7 +179,7 @@ const App = () => {
   const keyDownPressed = (e: any) => {
     console.log(e.key);
 
-    if (e.altKey && e.key === "1") {
+    if ((e.altKey && e.key === "1") || (e.altKey && e.key === "Enter")) {
       encryptClicked();
     }
 
@@ -187,12 +187,8 @@ const App = () => {
       decryptClicked();
     }
 
-    if (e.altKey && e.key === "3") {
+    if ((e.altKey && e.key === "3") || (e.altKey && e.key === "r")) {
       resetFields();
-    }
-
-    if (e.altKey && e.key === "Enter") {
-      encryptClicked();
     }
   };
 
@@ -429,7 +425,7 @@ const App = () => {
               <div className="group">
                 (<div className="key">3</div> / <div className="key">R</div>)
               </div>{" "}
-              — Decrypt
+              — Reset
             </span>
           </div>
         </section>
