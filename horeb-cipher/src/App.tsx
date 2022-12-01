@@ -28,6 +28,7 @@ import {
 const App = () => {
   const [text, setText] = useState<string>("");
   const [isFocus, setIsFocus] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [encrypted, setEncrypted] = useState<boolean>(false);
   const [copied, setCopied] = useState<boolean>(false);
   const {
@@ -59,8 +60,8 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    appRef.current.focus();
-  }, [appRef]);
+    textRef.current!.focus();
+  }, [textRef]);
 
   const updatePlainText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setIsError(false);
@@ -69,17 +70,21 @@ const App = () => {
   };
 
   const encryptClicked = () => {
+    setIsLoading(true);
     setEncrypted(true);
     var result = encryptHoreb(text);
     setText(result);
     textRef.current!.value = result;
+    setIsLoading(false);
   };
 
   const decryptClicked = () => {
+    setIsLoading(true);
     setEncrypted(false);
     var result = decryptHoreb(text);
     setText(result);
     textRef.current!.value = result;
+    setIsLoading(false);
   };
 
   const resetFields = () => {
@@ -177,8 +182,6 @@ const App = () => {
   };
 
   const keyDownPressed = (e: any) => {
-    console.log(e.key);
-
     if ((e.altKey && e.key === "1") || (e.altKey && e.key === "Enter")) {
       encryptClicked();
     }
@@ -330,6 +333,7 @@ const App = () => {
 
               <div>
                 <div className="state">
+                  {isLoading && <span className="loader"></span>}
                   <div className="success">
                     {isVerified && <HiCheck></HiCheck>}
                   </div>

@@ -1,4 +1,4 @@
-import { isNumeric } from "./../utils/alphabet";
+import { HALF_ALPHABET, isNumeric } from "./../utils/alphabet";
 import React, { useState } from "react";
 import {
   modulo,
@@ -42,8 +42,9 @@ const useRsa = () => {
     rotationIV: number,
     rotationV: number
   ) => {
-    primeP = getPrime(rotationI);
-    primeQ = getPrime(rotationII + 1);
+    primeP = getPrime(rotationI <= HALF_ALPHABET ? rotationI : (rotationI ) / 2);
+    rotationII = rotationII <= HALF_ALPHABET ? rotationII + 1 : (rotationII + 1) / 2;
+    primeQ = getPrime(rotationII);
     product = primeP * primeQ;
     totient = (primeP - 1) * (primeQ - 1);
     publicKey = setPublicKey(totient);
@@ -125,7 +126,6 @@ const useRsa = () => {
         }
       }
     }
-
     return result;
   };
 
@@ -158,13 +158,13 @@ const useRsa = () => {
 
           // if current current is a number, calculate rsa value and display appropriate character
         } else if (curr.startsWith("`")) {
+
           result = result.concat(bigNumberProcess(curr.slice(1)).toUpperCase());
         } else {
           result = result.concat(bigNumberProcess(curr));
         }
       }
     }
-
     return result;
   };
 
