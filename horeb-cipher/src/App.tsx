@@ -60,8 +60,8 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    textRef.current!.focus();
-  }, [textRef]);
+    appRef.current!.focus();
+  }, [appRef]);
 
   const updatePlainText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setIsError(false);
@@ -87,17 +87,25 @@ const App = () => {
     setIsLoading(false);
   };
 
+  const resetClicked = () => {
+    resetFields();
+    resetKeys();
+    setIsVerified(false);
+    setIsError(false);
+  };
+
   const resetFields = () => {
     setText("");
     textRef.current!.value = "";
     fileRef.current!.value = "";
+  };
+
+  const resetKeys = () => {
     setRotationI(0);
     setRotationII(0);
     setRotationIII(0);
     setRotationIV(0);
     setRotationV(0);
-    setIsVerified(false);
-    setIsError(false);
   };
 
   const incrementKeyI = () => {
@@ -407,7 +415,7 @@ const App = () => {
           <button
             type="button"
             className={isFocus ? "secondary-btn blurred" : "secondary-btn"}
-            onClick={resetFields}
+            onClick={resetClicked}
           >
             Reset
           </button>

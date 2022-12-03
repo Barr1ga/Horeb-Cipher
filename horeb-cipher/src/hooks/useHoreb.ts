@@ -132,22 +132,6 @@ const useHoreb = () => {
     return returnRotorVChar;
   };
 
-  const horebCipher = (text: string): string => {
-    var result = "";
-    for (var textIdx = 0; textIdx < text.length; textIdx++) {
-      const curr = text[textIdx];
-
-      if (isAlphabet(curr)) {
-        const resultCharacter = rotorI(curr);
-        result = result.concat(resultCharacter);
-      } else {
-        result = result.concat(curr);
-      }
-    }
-
-    return result;
-  };
-
   // run encryption
   const encryptHoreb = (text: string): string => {
     action = ACTIONS.ENCRYPT;
@@ -155,6 +139,11 @@ const useHoreb = () => {
     setIsVerified(false);
     setIsError(false);
 
+    console.log(rotationI);
+    console.log(rotationII);
+    console.log(rotationIII);
+    console.log(rotationIV);
+    console.log(rotationV);
     rsaConstructor(rotationI, rotationII, rotationIII, rotationIV, rotationV);
 
     const result = encryptRsa(text);

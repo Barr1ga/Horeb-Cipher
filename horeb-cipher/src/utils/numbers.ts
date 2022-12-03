@@ -14,7 +14,6 @@ export const getPrime = (number: number): number => {
   }
 
   for (var idx = 0; count <= number; idx++) {
-    console.log(count, number);
     if (isPrime(idx)) {
       count++;
       prime = idx;
@@ -44,8 +43,6 @@ export const isFactorOfNumber = (x: number, number: number): boolean => {
 //   * Must not be a factor of the totient
 export const setPublicKey = (totient: number): number => {
   for (var idx = 5; idx < totient; idx++) {
-    console.log("pub");
-
     if (isPrime(idx) && !isFactorOfNumber(totient, idx)) {
       return idx;
     }
@@ -60,7 +57,6 @@ export const setPublicKey = (totient: number): number => {
 //   * (PRIVATE_KEY * PUBLIC_KEY) mod TOTIENT = 1
 export const setPrivateKey = (publicKey: number, totient: number): number => {
   for (var idx = 0; idx < MAX; idx++) {
-    console.log("priv");
     if (modulo(idx * publicKey, totient) === 1) {
       return idx;
     }
