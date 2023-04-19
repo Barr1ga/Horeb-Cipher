@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { isUpperCase } from "./../utils/alphabet";
+import { useState } from "react";
 import { modulo } from "../utils/numbers";
 import {
   abcdef,
@@ -139,14 +140,24 @@ const useHoreb = () => {
     setIsVerified(false);
     setIsError(false);
 
-    console.log(rotationI);
-    console.log(rotationII);
-    console.log(rotationIII);
-    console.log(rotationIV);
-    console.log(rotationV);
-    rsaConstructor(rotationI, rotationII, rotationIII, rotationIV, rotationV);
+    rsaConstructor(rotationI, rotationII);
 
-    const result = encryptRsa(text);
+    let result = "";
+    text.split("").forEach((character) => {
+      if (isAlphabet(character)) {
+        if (isUpperCase(character)) {
+          result = result.concat(rotorI(character).toUpperCase());
+          return;
+        }
+
+        result = result.concat(rotorI(character));
+        return;
+      }
+
+      result = result.concat(character);
+    });
+    
+    result = encryptRsa(result);
 
     if (
       result.includes("undefined") ||
@@ -163,12 +174,13 @@ const useHoreb = () => {
   // run encryption
   const decryptHoreb = (text: string): string => {
     action = ACTIONS.DECRYPT;
-    rsaConstructor(rotationI, rotationII, rotationIII, rotationIV, rotationV);
+    rsaConstructor(rotationI, rotationII);
 
     setIsVerified(false);
     setIsError(false);
 
-    const result = decryptRsa(text);
+    let result = "";
+    result = decryptRsa(text);
 
     if (
       result.includes("undefined") ||
@@ -178,8 +190,25 @@ const useHoreb = () => {
       return "Decryption Error";
     }
 
+    let decryptedResult = "";
+    result.split("").forEach((character) => {
+      if (isAlphabet(character)) {
+        if (isUpperCase(character)) {
+          decryptedResult = decryptedResult.concat(
+            rotorI(character).toUpperCase()
+          );
+          return;
+        }
+
+        decryptedResult = decryptedResult.concat(rotorI(character));
+        return;
+      }
+
+      decryptedResult = decryptedResult.concat(character);
+    });
+
     setIsVerified(true);
-    return result;
+    return decryptedResult;
   };
 
   return {

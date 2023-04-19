@@ -32,7 +32,7 @@ export const isUpperCase = (character: string): boolean => {
 };
 
 export const isSpecialCharacter = (character: string): boolean => {
-  if (/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(character)) {
+  if (/[!@#$%^&*()_+=[\]{};':"\\|,.<>?]+/.test(character)) {
     return true;
   }
 

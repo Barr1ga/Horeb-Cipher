@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect, HtmlHTMLAttributes } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./App.css";
 import useHoreb from "./hooks/useHoreb";
-import useRsa from "./hooks/useRsa";
 import TextareaAutosize from "react-textarea-autosize";
 import Logo from "./assets/horeb-cipher-logo.svg";
 import {
@@ -14,7 +13,6 @@ import {
   HiOutlineDocumentDuplicate,
   HiOutlineExclamation,
 } from "react-icons/hi";
-import { IconContext } from "react-icons";
 import { modulo } from "./utils/numbers";
 import {
   abcdef,
@@ -369,7 +367,7 @@ const App = () => {
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     uploadedFile(e)
                   }
-                  // onChange={onSelectFile}
+                // onChange={onSelectFile}
                 />
                 <span className="copy">
                   <div className="tooltip-container">

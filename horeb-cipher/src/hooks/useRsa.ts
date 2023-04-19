@@ -1,12 +1,9 @@
-import { HALF_ALPHABET, isNumeric, MAX_ALPHABET } from "./../utils/alphabet";
-import React, { useState } from "react";
+import { HALF_ALPHABET, isNumeric } from "./../utils/alphabet";
 import {
-  modulo,
   getPrime,
   setPublicKey,
   setPrivateKey,
   randomIntFromInterval,
-  isPrime,
 } from "../utils/numbers";
 import BigNumber from "bignumber.js";
 import {
@@ -35,16 +32,9 @@ const useRsa = () => {
   var product = 0;
   var totient = 0;
 
-  const rsaConstructor = (
-    rotationI: number,
-    rotationII: number,
-    rotationIII: number,
-    rotationIV: number,
-    rotationV: number
-  ) => {
-    primeP = getPrime(Math.floor((rotationI) % HALF_ALPHABET));
-    rotationII = Math.floor(((rotationII + 1) % HALF_ALPHABET));
-    primeQ = getPrime(rotationII);
+  const rsaConstructor = (rotationI: number, rotationII: number) => {
+    primeP = getPrime(Math.floor(rotationI % HALF_ALPHABET));
+    primeQ = getPrime(Math.floor((rotationII + 1) % HALF_ALPHABET));
     product = primeP * primeQ;
     totient = (primeP - 1) * (primeQ - 1);
     publicKey = setPublicKey(totient);
@@ -78,8 +68,6 @@ const useRsa = () => {
   const encryptRsa = (text: string): string => {
     action = ACTIONS.ENCRYPT;
     try {
-
-
       var result = "";
       const length = text.length;
 
@@ -164,8 +152,9 @@ const useRsa = () => {
 
             // if current current is a number, calculate rsa value and display appropriate character
           } else if (curr.startsWith("`")) {
-
-            result = result.concat(bigNumberProcess(curr.slice(1)).toUpperCase());
+            result = result.concat(
+              bigNumberProcess(curr.slice(1)).toUpperCase()
+            );
           } else {
             result = result.concat(bigNumberProcess(curr));
           }

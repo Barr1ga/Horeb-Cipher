@@ -31,7 +31,7 @@ export const modulo = (n: number, m: number): number => {
 };
 
 export const isFactorOfNumber = (x: number, number: number): boolean => {
-  if (modulo(x, number) === 0) {
+  if (((x % number) + number) % number === 0) {
     return true;
   }
   return false;
