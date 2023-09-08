@@ -307,11 +307,27 @@ hr {
   justify-content: space-between;
   align-items: center;
   border-radius: 8px;
-  padding: 5px 15px;
+  padding: 0px 15px;
   flex: 1;
   transition: 0.1s ease-in 0s;
   height: 40px;
   gap: 10px;
+}
+
+.cipher-char-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  height: 100%;
+  width: 20px;
+}
+
+.cipher-char-group p {
+  position: absolute;
 }
 
 .keys .key .arrows {

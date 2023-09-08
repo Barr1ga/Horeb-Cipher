@@ -4,8 +4,6 @@ import useHoreb from "./hooks/useHoreb";
 import TextareaAutosize from "react-textarea-autosize";
 import Logo from "./assets/horeb-cipher-logo.svg";
 import {
-  HiChevronDown,
-  HiChevronUp,
   HiOutlineDownload,
   HiOutlineUpload,
   HiInformationCircle,
@@ -22,6 +20,8 @@ import {
   dvorak,
   MAX_ALPHABET,
 } from "./utils/alphabet";
+import Key from "./components/Key";
+import CipherKey from "./components/CipherKey";
 
 const App = () => {
   const [text, setText] = useState<string>("");
@@ -70,7 +70,7 @@ const App = () => {
   const encryptClicked = () => {
     setIsLoading(true);
     setEncrypted(true);
-    var result = encryptHoreb(text);
+    const result = encryptHoreb(text);
     setText(result);
     textRef.current!.value = result;
     setIsLoading(false);
@@ -79,7 +79,7 @@ const App = () => {
   const decryptClicked = () => {
     setIsLoading(true);
     setEncrypted(false);
-    var result = decryptHoreb(text);
+    const result = decryptHoreb(text);
     setText(result);
     textRef.current!.value = result;
     setIsLoading(false);
@@ -228,61 +228,35 @@ const App = () => {
             Cipher key
           </label>
           <span className={isFocus ? "keys blurred" : "keys"}>
-            <div className="key">
-              <div className="arrows">
-                <div className="arrow" onClick={incrementKeyI}>
-                  <HiChevronUp></HiChevronUp>
-                </div>
-                <div className="arrow" onClick={decrementKeyI}>
-                  <HiChevronDown></HiChevronDown>
-                </div>
-              </div>
-              <p>{abcdef[rotationI].toUpperCase()}</p>
-            </div>
-            <div className="key">
-              <div className="arrows">
-                <div className="arrow" onClick={incrementKeyII}>
-                  <HiChevronUp></HiChevronUp>
-                </div>
-                <div className="arrow" onClick={decrementKeyII}>
-                  <HiChevronDown></HiChevronDown>
-                </div>
-              </div>
-              <p>{colemak[rotationII].toUpperCase()}</p>
-            </div>
-            <div className="key">
-              <div className="arrows">
-                <div className="arrow" onClick={incrementKeyIII}>
-                  <HiChevronUp></HiChevronUp>
-                </div>
-                <div className="arrow" onClick={decrementKeyIII}>
-                  <HiChevronDown></HiChevronDown>
-                </div>
-              </div>
-              <p>{azerty[rotationIII].toUpperCase()}</p>
-            </div>
-            <div className="key">
-              <div className="arrows">
-                <div className="arrow" onClick={incrementKeyIV}>
-                  <HiChevronUp></HiChevronUp>
-                </div>
-                <div className="arrow" onClick={decrementKeyIV}>
-                  <HiChevronDown></HiChevronDown>
-                </div>
-              </div>
-              <p>{qwerty[rotationIV].toUpperCase()}</p>
-            </div>
-            <div className="key">
-              <div className="arrows">
-                <div className="arrow" onClick={incrementKeyV}>
-                  <HiChevronUp></HiChevronUp>
-                </div>
-                <div className="arrow" onClick={decrementKeyV}>
-                  <HiChevronDown></HiChevronDown>
-                </div>
-              </div>
-              <p>{dvorak[rotationV].toUpperCase()}</p>
-            </div>
+            <CipherKey
+              incrementKey={incrementKeyI}
+              decrementKey={decrementKeyI}
+              character={abcdef[rotationI].toUpperCase()}
+            />
+
+            <CipherKey
+              incrementKey={incrementKeyII}
+              decrementKey={decrementKeyII}
+              character={colemak[rotationII].toUpperCase()}
+            />
+
+            <CipherKey
+              incrementKey={incrementKeyIII}
+              decrementKey={decrementKeyIII}
+              character={azerty[rotationIII].toUpperCase()}
+            />
+
+            <CipherKey
+              incrementKey={incrementKeyIV}
+              decrementKey={decrementKeyIV}
+              character={qwerty[rotationIV].toUpperCase()}
+            />
+
+            <CipherKey
+              incrementKey={incrementKeyV}
+              decrementKey={decrementKeyV}
+              character={dvorak[rotationV].toUpperCase()}
+            />
           </span>
           <div className="input">
             <TextareaAutosize
@@ -419,21 +393,20 @@ const App = () => {
           </button>
           <div className={isFocus ? "shortcut-keys blurred" : "shortcut-keys"}>
             <span>
-              <div className="key">ALT</div>+
+              <Key keyName="ALT" />+
               <div className="group">
-                (<div className="key">1</div> / <div className="key">ENTER</div>
-                )
+                <Key keyName="1" /> / <Key keyName="ENTER" />
               </div>{" "}
               — Encrypt
             </span>
             <span>
-              <div className="key">ALT</div>+<div className="key">2</div> —
+              <Key keyName="ALT" />+<Key keyName="2" /> —
               Decrypt
             </span>{" "}
             <span>
-              <div className="key">ALT</div>+
+              <Key keyName="ALT" />+
               <div className="group">
-                (<div className="key">3</div> / <div className="key">R</div>)
+                <Key keyName="3" /> / <Key keyName="R" />
               </div>{" "}
               — Reset
             </span>
