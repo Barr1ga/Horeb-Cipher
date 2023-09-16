@@ -341,7 +341,7 @@ const App = () => {
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     uploadedFile(e)
                   }
-                // onChange={onSelectFile}
+                  // onChange={onSelectFile}
                 />
                 <span className="copy">
                   <div className="tooltip-container">
@@ -400,8 +400,7 @@ const App = () => {
               — Encrypt
             </span>
             <span>
-              <Key keyName="ALT" />+<Key keyName="2" /> —
-              Decrypt
+              <Key keyName="ALT" />+<Key keyName="2" /> — Decrypt
             </span>{" "}
             <span>
               <Key keyName="ALT" />+

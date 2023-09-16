@@ -147,13 +147,13 @@ svg {
   margin-top: 10px;
 }
 
-.input .interactions > div:nth-child(2) {
+.input .interactions>div:nth-child(2) {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.input .interactions > div:nth-child(2) .text-length {
+.input .interactions>div:nth-child(2) .text-length {
   opacity: 0.3;
 }
 
@@ -386,41 +386,41 @@ hr {
   top: 27px;
 }
 
-.upload label + .tooltip {
+.upload label+.tooltip {
   width: 108px;
   left: -54px;
   right: -42px;
 }
 
-.download label + .tooltip {
+.download label+.tooltip {
   width: 123px;
   left: -62px;
   right: -42px;
 }
 
-.hash label + .tooltip {
+.hash label+.tooltip {
   width: 100px;
   left: -50px;
   right: -42px;
 }
 
-.copy label + .tooltip {
+.copy label+.tooltip {
   left: -45px;
   right: -42px;
 }
 
-.info label + .tooltip {
+.info label+.tooltip {
   bottom: 35px;
   width: 35px;
   left: -50px;
   right: -50px;
 }
 
-.filename label:hover + .tooltip,
-.upload label:hover + .tooltip,
-.hash label:hover + .tooltip,
-.info label:hover + .tooltip,
-.copy label:hover + .tooltip {
+.filename label:hover+.tooltip,
+.upload label:hover+.tooltip,
+.hash label:hover+.tooltip,
+.info label:hover+.tooltip,
+.copy label:hover+.tooltip {
   opacity: 1;
   transition: 0.1s ease-in 0s;
 }
@@ -443,6 +443,7 @@ hr {
   justify-content: space-between;
 }
 
+/* eslint-disable-next-line */
 .blurred {
   opacity: 0.3;
   filter: blur(3px);
@@ -452,7 +453,7 @@ hr {
 .state {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: ce nter;
 }
 
 .state svg {
@@ -463,7 +464,7 @@ hr {
 .state .success,
 .state .error {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 }
 
@@ -515,13 +516,14 @@ hr {
   display: inline-block;
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
   }
 
-  @keyframes rotation {
-  0% {
-      transform: rotate(0deg);
-  }
   100% {
-      transform: rotate(360deg);
+    transform: rotate(360deg);
   }
-  } 
+}
